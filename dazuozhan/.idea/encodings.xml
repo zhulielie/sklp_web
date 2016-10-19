@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://C:/Python27/Lib/site-packages/django/contrib/admin/locale/zh_Hans/LC_MESSAGES/django.po" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/upload/tx.txt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/upload/txpl.txt" charset="UTF-8" />
+  </component>
+</project>

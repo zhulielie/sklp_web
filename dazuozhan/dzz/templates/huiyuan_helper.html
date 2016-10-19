@@ -1,0 +1,82 @@
+{% extends "admin/base_site.html" %}
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+{% endblock %}
+{% block content %}
+
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+
+
+            <div class="btn-group">
+                <a id="clearhy" class="btn btn-lg btn-danger" href="#"> 清空会员</a>
+                <a id="addnew10" class="btn btn-lg btn-danger" href="#"> 添加10个随机会员</a>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block zll_footer %}
+
+    <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/jquery.3.1.1.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            $(document).on('click', "#addnew10", function () {
+
+                        swal({
+                            title: "提醒",
+                            text: "确定要添加十个随机会员?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确定",
+                            closeOnConfirm: false
+                        }, function () {
+                            $.get('/admin/dzz/huiyuan/helper?addnew=1', function (data) {
+                                swal("已添加!", "添加成功!", "success");
+                            })
+
+                        });
+
+
+                    }
+            )
+
+            $(document).on('click', "#clearhy", function () {
+
+                        swal({
+                            title: "提醒",
+                            text: "确定要删除全部会员?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确定",
+                            closeOnConfirm: false
+                        }, function () {
+                            $.get('/admin/dzz/huiyuan/helper?clearhy=1', function (data) {
+                                swal("搞定!", "删除成功!", "success");
+                            })
+
+                        });
+
+
+                    }
+            )
+
+        })
+    </script>
+{% endblock %}
