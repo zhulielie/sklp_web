@@ -48,7 +48,7 @@ class Yifu(models.Model):
     chengben = models.CharField(max_length=8, verbose_name="成本", default='', null=True, blank=True)
     jifen = models.CharField(max_length=8, verbose_name="积分", default='', null=True, blank=True)
     dsq = models.CharField(max_length=8, verbose_name="记一分", default='', null=True, blank=True)
-
+    sold = models.BooleanField(default=0,verbose_name="是否卖掉")
     # jifen = models.CharField(max_length=8,verbose_name="积分",default='',null=True)
 
     class Meta():
@@ -140,4 +140,4 @@ class Xiaofeijilu(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return '%s%s' % (self.huiyuan, Xiaofeijilu._meta.verbose_name)
+        return '%s%s' % (self.huiyuan, self.xiaofeijine)

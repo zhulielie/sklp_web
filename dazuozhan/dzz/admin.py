@@ -5,8 +5,7 @@ from django.conf.urls import url
 from django.utils.html import format_html
 # Register your models here.
 from .models import Jinhuoqudao, Yifu, ChukuLog, RukuLog, Jiagewenjian, Huiyuan, Xiaofeijilu
-from django.template.response import TemplateResponse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.template.response import TemplateResponse, HttpResponse
 import json
 
 from django.urls import reverse
@@ -24,14 +23,14 @@ class YiFuAdmin(admin.ModelAdmin):
         }),
         ('其他', {
             'classes': ('collapse',),
-            'fields': ('jiage', 'chengben'),
+            'fields': ('jiage', 'chengben','sold'),
         }),
     )
     #
     # def view_on_site(self, obj):
     #     url = reverse('admin', kwargs={'name': obj.name})
     #     return 'https://example.com' + url
-    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'qudao', 'jiage')
+    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'qudao', 'jiage','sold')
     search_fields = ('name', 'tiaomahao')
     list_filter = ('qudao',)
     save_as = True
@@ -41,14 +40,12 @@ class YiFuAdmin(admin.ModelAdmin):
         fb = {"data": False}
         try:
 
-
             yifuinfo = Yifu.objects.filter(tiaomahao=iid)
             fb['yifu'] = yifuinfo[0]
             fb['kucun'] = len(yifuinfo)
         except Exception as e:
             print e
             fb['data'] = False
-
 
         return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")
 
@@ -60,8 +57,6 @@ class YiFuAdmin(admin.ModelAdmin):
             url(r'^helper/$', self.admin_site.admin_view(self.my_view)),
         ]
         return my_urls + urls
-
-
 
     def my_view(self, request):
         # ...
@@ -75,7 +70,7 @@ class YiFuAdmin(admin.ModelAdmin):
 
 
 class JiagewenjianAdmin(admin.ModelAdmin):
-    list_display = ('filename', 'caozuoren', 'time', 'uploadfile')
+    list_display = ('filename', 'caozuoren', 'time', 'calcnew', 'uploadfile')
 
     def get_urls(self):
         urls = super(JiagewenjianAdmin, self).get_urls()
@@ -85,7 +80,10 @@ class JiagewenjianAdmin(admin.ModelAdmin):
         return my_urls + urls
 
     def my_view(self, request, iid):
+        # ...
+
         tf = Jiagewenjian.objects.get(pk=iid)
+
         newprices = []
         with codecs.open('%s' % tf.uploadfile, "r", "utf-8-sig") as f:
             if tf.filename == u'1':
@@ -145,13 +143,20 @@ class JiagewenjianAdmin(admin.ModelAdmin):
 
         if tf.filename == u'1':
             context = dict(
+                # Include common variables for rendering the admin template.
                 self.admin_site.each_context(request),
+                # Anything else you want in the context...
                 newprices=newprices,
             )
 
+            # with open('filename', 'wt') as f:
+            #     f.write('hello, world!')
             return TemplateResponse(request, "sometemplate.html", context)
 
+    def calcnew(self, obj):
+        return format_html('<a href="/admin/dzz/jiagewenjian/calc/%s">操作</a>' % obj.pk)
 
+    calcnew.short_description = ''
 
     actions = ['wenjiandaoru']
 
@@ -171,7 +176,7 @@ class JiagewenjianAdmin(admin.ModelAdmin):
                                     continue
                             except Exception as e:
                                 print e
-                                continuem
+                                continue
 
                             name = ll[0]
                             if name:
@@ -209,22 +214,6 @@ class JiagewenjianAdmin(admin.ModelAdmin):
                     errcount += 1
             else:
                 notcount += 1
-                newjiage = []
-                with codecs.open('upload/%s' % one.uploadfile, "r", "utf-8-sig") as f:
-                    for chengben in f:
-                        chengben = int(chengben)
-
-                        if chengben <= 100:
-                            jiage = chengben * 2 * 1.25
-                        elif chengben <= 300:
-                            jiage = chengben * 1.85 * 1.25
-                        else:
-                            jiage = chengben * 1.8 * 1.25
-
-                        newjiage.append("%s\n" % int(jiage))
-                with open('tmp/newp.txt', 'w') as f:
-                    f.writelines(newjiage)
-                    return HttpResponseRedirect('/dzz/get/txt/')
         self.message_user(request, "导入失败文件数量:%s,成功文件数量:%s,非导入文件勾选数量:%s." % (errcount, okcount, notcount))
 
     wenjiandaoru.short_description = '执行文件批量导入'
@@ -239,30 +228,64 @@ class RukuAdmin(admin.ModelAdmin):
 
 
 class HuiyuanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'jifen', 'birthday')
+    list_display = ('name', 'jifen', 'birthday', 'cellphone', 'zongxiaofeicishu','last_xiaofei','last_xiaofeijine','zongxiaofeijine')
     exclude = ('last_xiaofei', 'zongxiaofeijine', 'zongxiaofeicishu', 'last_xiaofeijine', 'jifen', 'shengrizengpin')
 
+    def json_huiyuan(self, request, iid):
+
+        fb = {"data": False}
+        try:
+
+            huiyuanyinfo = Huiyuan.objects.get(cellphone=iid)
+            fb['huiyuan'] = huiyuanyinfo
+
+        except Exception as e:
+            print e
+            fb['data'] = False
+
+        return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")
 
     def get_urls(self):
         urls = super(HuiyuanAdmin, self).get_urls()
         my_urls = [
 
             url(r'^helper/$', self.admin_site.admin_view(self.helper)),
+            url(r'^json_huiyuan/(?P<iid>\w+)/$', self.admin_site.admin_view(self.json_huiyuan)),
         ]
         return my_urls + urls
 
     def helper(self, request):
         # ...
-        print request
+
         context = dict(
             # Include common variables for rendering the admin template.
             self.admin_site.each_context(request),
             # Anything else you want in the context...
             key='test',
         )
-
-
+        if request.GET.get('addnew', '') == '1':
+            from pynamesgenerator import gen_two_words
+            import random
+            for x in range(10):
+                try:
+                    name = gen_two_words(split=' ', lowercase=False)
+                    cellphone = random.randint(10000000, 99999999)
+                    Huiyuan.objects.create(zongxiaofeicishu=random.randint(0, 20), name=name,
+                                           cellphone='139%s' % cellphone, jifen=random.randint(10, 500),
+                                           last_xiaofeijine = '%s' % random.randint(1,100),
+                                           zongxiaofeijine = '%s' % random.randint(100,5000),
+                                           last_xiaofei = '%s-%s-%s' % (
+                                           random.randint(1960, 2000), random.randint(1, 12), random.randint(1, 31)),
+                                           birthday='%s-%s-%s' % (
+                                           random.randint(1960, 2000), random.randint(1, 12), random.randint(1, 31)))
+                except Exception as e:
+                    print e
+        elif request.GET.get('clearhy', '') == '1':
+            Huiyuan.objects.all().delete()
+        else:
+            pass
         return TemplateResponse(request, "huiyuan_helper.html", context)
+
 
 class XiaofeijiluAdmin(admin.ModelAdmin):
     list_display = ('huiyuan', 'jifen', 'xiaofeijine', 'get_products', 'xiaofeishijian')
@@ -276,9 +299,31 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         urls = super(XiaofeijiluAdmin, self).get_urls()
         my_urls = [
             url(r'^shouyin/$', self.my_view),
-
+            url(r'^ok/$', self.jiluzaian),
         ]
         return my_urls + urls
+
+
+    def jiluzaian(self, request):
+        fb = {}
+        fb['data'] = True
+        kehu = request.GET.get('kehu', '')
+        yifu = request.GET.get('yifu','')
+
+        
+        huiyuan = Huiyuan.objects.get(cellphone=kehu)
+        jilu = Xiaofeijilu(huiyuan=huiyuan)
+        yifus = yifu.split('__')
+        jilu.save()
+        for yf in yifus:
+            syifu = Yifu.objects.filter(tiaomahao=yf)[0]
+
+            jilu.yifu.add(syifu) 
+            syifu.sold= True
+            syifu.save()
+        
+        
+        return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")
 
     def my_view(self, request):
         # ...

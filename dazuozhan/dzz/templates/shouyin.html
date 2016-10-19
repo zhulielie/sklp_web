@@ -1,20 +1,14 @@
 {% extends "admin/base_site.html" %}
 {% block extrahead %}
     <link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/google.css">
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-
     <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-
-
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css">
     {#    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/chosen/1.6.2/chosen.min.css">#}
-
 {% endblock %}
 {% block content %}
-
-
     <div class="container-fluid">
         <div class="row-fluid">
 
@@ -53,35 +47,27 @@
                                     库存
                                 </th>
                                 <th style="length:20px">
-
                                 </th>
                             </tr>
                             </thead>
                             <tbody id="suogoushangpin">
                             <tr>
                                 <th>
-
                                 </th>
                                 <th>
                                     总件数:<span id="shuliangheji">0</span>
                                 </th>
                                 <th>
-
                                 </th>
                                 <th>
                                     总金额:<span id="jiageheji">0</span>
                                 </th>
                                 <th>
-
                                 </th>
                                 <th>
-
                                 </th>
                             </tr>
-
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>
@@ -158,41 +144,22 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
             </div>
-
-
             <div class="col-lg-12 text-center ">
                 <hr>
-
             </div>
-
             <div class="col-lg-12 text-center"><a id="action" class="btn btn-lg btn-warning" href="#">收款确认</a></div>
         </div>
-
-
     </div>
-
-
-
-
-
 {% endblock %}
-
 {% block zll_footer %}
 
     <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/jquery.3.1.1.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-
     {#    <script src="//cdn.bootcss.com/chosen/1.6.2/chosen.jquery.min.js"></script>#}
     <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
-
-
 
     {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg"></script>#}
     {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/npm.js"></script>#}
@@ -244,7 +211,7 @@
                         else
                             add_enable = 'disabled="disabled"'
                         reduce_enable = 'disabled="disabled"'
-                        var newtr = ['<tr jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '"  shuliang="1">',
+                        var newtr = ['<tr class="goumaitiaomu" jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '" tiaomahao="'+data.yifu.tiaomahao+'" shuliang="1">',
                             '  <td class="text-left">' + data.yifu.name + '</td>',
                             '  <td class="shuliang">' + 1 + '</td>',
                             '  <td>' + data.yifu.jiage + '</td>',
@@ -308,7 +275,7 @@
                     closeOnConfirm: false
                 }, function () {
                     jiluzaian()
-                    swal("搞定!", "继续收银!", "success");
+                 
                 });
 
 
@@ -352,9 +319,30 @@
 
         }
         jiluzaian = function () {
+            var huowucount = 0;
+            var arrList = []; 
+            var flag = false
+            var kehucellphone = $("#huiyuan_search").val()
+            $("#suogoushangpin .goumaitiaomu").each(function(x,s){
+                arrList.push($(s).attr('tiaomahao')); 
+                huowucount++;
+            })
 
-
-
+            if(huowucount && kehucellphone)   {
+               $.get("/admin/dzz/xiaofeijilu/ok/",{kehu:kehucellphone,yifu:arrList.join("__")},function(fb,status){
+                    if(fb && fb.data)
+                    swal("搞定!", "继续收银!", "success");
+                else
+                    swal("错误!", "没有衣服或者会员!", "error");
+                 });
+            }
+            else
+            {
+                
+            }
+            
+            
         }
+        
     </script>
 {% endblock %}
