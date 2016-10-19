@@ -1,0 +1,360 @@
+{% extends "admin/base_site.html" %}
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css">
+    {#    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/chosen/1.6.2/chosen.min.css">#}
+
+{% endblock %}
+{% block content %}
+
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+
+            <div class="col-lg-8">
+                <div class="row-fluid">
+                    <div class="">
+                        <select id="yifu_search" style="width:100%;">
+                            <option></option>
+                            {% for x in yifu %}
+                                <option value="{{ x.tiaomahao }}">{{ x.name }} {{ x.yanse }} {{ x.guige }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row-fluid text-center">
+                    <div class="">
+                        <div style="text-align: left"><span class="label label-success">选购商品如下</span></div>
+                        <br>
+                        <table class="table table-striped ">
+                            <thead>
+                            <tr>
+                                <th style="width: 200px">
+                                    款号
+                                </th>
+                                <th class="text-center">
+                                    数量
+                                </th>
+                                <th class="text-center">
+                                    单价
+                                </th>
+                                <th class="text-center">
+                                    小计
+                                </th>
+                                <th style="length:20px" class="text-center">
+                                    库存
+                                </th>
+                                <th style="length:20px">
+
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody id="suogoushangpin">
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th>
+                                    总件数:<span id="shuliangheji">0</span>
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                    总金额:<span id="jiageheji">0</span>
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4" style="border-left:  1px solid ">
+
+                <div class="row-fluid">
+                    <div class="text-center">
+                        <select id="huiyuan_search" style="width:100%;">
+                            <option></option>
+                            {% for x in huiyuan %}
+                                <option value='{{ x.cellphone }}'>{{ x.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div><span class="label label-success">会员信息</span></div>
+                    <br>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">会员姓名</div>
+                            <input class="form-control" type="text" id="huiyuanxingming" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-addon">手机号</div>
+                                <input class="form-control" type="text" id="cellphone" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-addon">积分</div>
+                                <input class="form-control" type="text" id="jifen" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <div class="row-fluid">
+                    <div><span class="label label-success">支付信息</span></div>
+                    <br>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">应付金额</div>
+                            <input class="form-control" type="text" id="yingfukuan" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-addon">兑换积分</div>
+                                <input class="form-control" type="text" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-addon">实付金额</div>
+                                <input class="form-control" type="text" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-addon">积分抵扣</div>
+                                <input class="form-control" type="text" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="col-lg-12 text-center ">
+                <hr>
+
+            </div>
+
+            <div class="col-lg-12 text-center"><a id="action" class="btn btn-lg btn-warning" href="#">收款确认</a></div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block zll_footer %}
+
+    <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/jquery.3.1.1.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    {#    <script src="//cdn.bootcss.com/chosen/1.6.2/chosen.jquery.min.js"></script>#}
+    <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
+
+
+
+    {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg"></script>#}
+    {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/npm.js"></script>#}
+    <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            $(document).on('click', ".yifu_delete", function () {
+                        tmp = $(this).parent().parent().parent()
+
+                        swal({
+                            title: "提醒",
+                            text: "确定要删除？",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "确定",
+                            closeOnConfirm: false
+                        }, function () {
+                            deleteitem(parseInt(tmp.attr('jiage')) * parseInt(tmp.attr('shuliang')))
+                            tmp.remove()
+                            swal("已删除!", "删除成功!", "success");
+                        });
+
+
+                    }
+            )
+
+            $("#huiyuan_search").select2({placeholder: '选择一位会员'})
+            $("#yifu_search").select2({placeholder: '选择一件衣服'})
+
+            $("#huiyuan_search").on("select2:select", function (e) {
+                var nowvar = e.params.data.id
+                $.get('/admin/dzz/huiyuan/json_huiyuan/' + nowvar, {}, function (data) {
+                    if (data) {
+                        $("#huiyuanxingming").val(data.huiyuan.name)
+                        $("#jifen").val(data.huiyuan.jifen)
+                        $("#cellphone").val(data.huiyuan.cellphone)
+                    }
+                })
+
+            });
+
+            $("#yifu_search").on("select2:select", function (e) {
+                var nowvar = e.params.data.id
+                $.get('/admin/dzz/yifu/json_yifu/' + nowvar, {}, function (data) {
+                    if (data) {
+                        if (parseInt(data.kucun) > 1)
+                            add_enable = ''
+                        else
+                            add_enable = 'disabled="disabled"'
+                        reduce_enable = 'disabled="disabled"'
+                        var newtr = ['<tr jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '"  shuliang="1">',
+                            '  <td class="text-left">' + data.yifu.name + '</td>',
+                            '  <td class="shuliang">' + 1 + '</td>',
+                            '  <td>' + data.yifu.jiage + '</td>',
+                            '  <td class="xiaoji">' + data.yifu.jiage + '</td>',
+                            '  <td> ' + data.kucun + '</td>',
+                            '  <td><div class="btn-group">',
+                            '  <a class="btn btn-xs btn-warning yifu_add" ' + add_enable + '> + </a>',
+                            '  <a class="btn btn-xs btn-danger yifu_delete" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>',
+
+                            '  <a class="btn btn-xs btn-warning yifu_reduce" ' + reduce_enable + '> - </a>',
+                            '  </div></td></tr>'].join("");
+
+                        $("#suogoushangpin").prepend(newtr)
+                        addnewitem(data.yifu.jiage)
+                        $("#yifu_search").val(null).trigger("change");
+                    }
+
+                })
+
+            });
+            $(document).on('click', ".yifu_add", function () {
+                if ($(this).attr('disabled') == 'disabled')
+                    return
+                tmp = $(this).parent().parent().parent()
+                zizeng_shuxing(tmp, 'shuliang', 1)
+                addnewitem(tmp.attr('jiage'))
+                zizeng_text(tmp.children('.shuliang'), 1)
+
+
+                if (tmp.attr('shuliang') == tmp.attr('kucun'))
+                    tmp.find('.yifu_add').attr('disabled', 'disabled')
+                tmp.find('.yifu_reduce').removeAttr('disabled')
+
+            });
+            $(document).on('click', ".yifu_reduce", function () {
+
+                if ($(this).attr('disabled') == 'disabled')
+                    return
+                tmp = $(this).parent().parent().parent()
+                zizeng_shuxing(tmp, 'shuliang', -1)
+                addnewitem(0 - parseInt(tmp.attr('jiage')))
+                zizeng_text(tmp.children('.shuliang'), -1)
+
+
+                if (tmp.attr('shuliang') == '1')
+                    tmp.find('.yifu_reduce').attr('disabled', 'disabled')
+                tmp.find('.yifu_add').removeAttr('disabled')
+
+            });
+
+
+            $(document).on('click', "#action", function () {
+
+                swal({
+                    title: "提醒",
+                    text: "确定要完全成交易？",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定",
+                    closeOnConfirm: false
+                }, function () {
+                    jiluzaian()
+                    swal("搞定!", "继续收银!", "success");
+                });
+
+
+            })
+        });
+
+
+        zizeng_shuxing = function (someone, shuxing, shuzhi) {
+            someone.attr(shuxing, parseInt(someone.attr(shuxing)) + shuzhi)
+
+        }
+        zizeng_text = function (someone, shuzhi) {
+            someone.text(parseInt(someone.text()) + shuzhi)
+
+        }
+
+        addnewitem = function (jiage) {
+            shuliangnow = 0
+            jiagenow = 0
+            shuliangnow = $("#shuliangheji").text()
+            jiagenow = $("#jiageheji").text()
+            shuliangnow = parseInt(shuliangnow) + 1
+            jiagenow = parseInt(jiagenow) + parseInt(jiage)
+            $("#shuliangheji").text(shuliangnow)
+            $("#jiageheji").text(jiagenow)
+            set_yinfukuan()
+        }
+        deleteitem = function (jiage) {
+            shuliangnow = 0
+            jiagenow = 0
+            shuliangnow = $("#shuliangheji").text()
+            jiagenow = $("#jiageheji").text()
+            shuliangnow = parseInt(shuliangnow) - 1
+            jiagenow = parseInt(jiagenow) - parseInt(jiage)
+            $("#shuliangheji").text(shuliangnow)
+            $("#jiageheji").text(jiagenow)
+            set_yinfukuan()
+        }
+        set_yinfukuan = function () {
+            $("#yingfukuan").val($("#jiageheji").text())
+
+        }
+        jiluzaian = function () {
+
+
+
+        }
+    </script>
+{% endblock %}
