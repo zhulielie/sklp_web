@@ -102,6 +102,10 @@ class RukuLog(models.Model):
 shifou = ((1, u'女'), (0, u'男'))
 lingqu = ((1, u'已领取'), (0, u'未领取'))
 
+import datetime
+
+def yestoday():
+  return datetime.date.today() - datetime.timedelta(days=1)
 
 class Huiyuan(models.Model):
     name = models.CharField(max_length=8, verbose_name="姓名")
@@ -111,7 +115,7 @@ class Huiyuan(models.Model):
     touxiang = models.CharField(verbose_name="头像", max_length=32, blank=True, null=True, default='')
     lianxidizhi = models.CharField(verbose_name="联系地址", blank=True, null=True, max_length=128)
     jifen = models.IntegerField(verbose_name="积分", default=0, blank=True, null=True)
-    last_xiaofei = models.DateTimeField(verbose_name="最近一次消费时间", null=True, blank=True)
+    last_xiaofei = models.DateTimeField(verbose_name="最近一次消费时间", null=True, blank=True,default=yestoday)
     last_xiaofeijine = models.IntegerField(verbose_name="最近一次消费金额", null=True, blank=True, default=0)
     zongxiaofeijine = models.IntegerField(verbose_name="总消费金额", null=True, blank=True, default=0)
     zongxiaofeicishu = models.IntegerField(verbose_name="总消费次数", null=True, blank=True, default=0)

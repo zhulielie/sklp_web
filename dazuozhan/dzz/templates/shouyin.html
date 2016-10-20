@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/messenger/1.5.0/css/messenger.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/messenger/1.5.0/css/messenger-theme-future.min.css">
     {#    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/chosen/1.6.2/chosen.min.css">#}
 {% endblock %}
 {% block content %}
@@ -31,7 +33,7 @@
                         <table class="table table-striped ">
                             <thead>
                             <tr>
-                                <th style="width: 200px">
+                                <th style="width: 200px;overflow: hidden">
                                     款号
                                 </th>
                                 <th class="text-center">
@@ -160,11 +162,21 @@
 
     {#    <script src="//cdn.bootcss.com/chosen/1.6.2/chosen.jquery.min.js"></script>#}
     <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
+    <script src="//cdn.bootcss.com/messenger/1.5.0/js/messenger.min.js"></script>
+    <script src="//cdn.bootcss.com/messenger/1.5.0/js/messenger-theme-future.min.js"></script>
 
     {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg"></script>#}
     {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/npm.js"></script>#}
     <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.js"></script>
     <script type="application/javascript">
+
+        var arr =  new Array(); 
+        Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+        this.splice(index, 1);
+        }
+        };
         $(function () {
             $(document).on('click', ".yifu_delete", function () {
                         tmp = $(this).parent().parent().parent()
@@ -176,11 +188,15 @@
                             showCancelButton: true,
                             confirmButtonColor: "#DD6B55",
                             confirmButtonText: "确定",
-                            closeOnConfirm: false
+                            closeOnConfirm: true
                         }, function () {
                             deleteitem(parseInt(tmp.attr('jiage')) * parseInt(tmp.attr('shuliang')))
                             tmp.remove()
-                            swal("已删除!", "删除成功!", "success");
+                            Messenger().post({
+                              message: "删除成功!",
+                              type: "success"
+                            })
+                         
                         });
 
 
@@ -203,15 +219,27 @@
             });
 
             $("#yifu_search").on("select2:select", function (e) {
-                var nowvar = e.params.data.id
-                $.get('/admin/dzz/yifu/json_yifu/' + nowvar, {}, function (data) {
+                tmpflag = true
+                $(arr).each(function(x,s){
+                    if(s == e.params.data.id)
+                    {
+                        tmpflag = false
+                        return false;
+                    }
+                
+                })
+                
+                if(tmpflag)
+                {
+                    var nowvar = e.params.data.id
+                    $.get('/admin/dzz/yifu/json_yifu/' + nowvar, {}, function (data) {
                     if (data) {
                         if (parseInt(data.kucun) > 1)
                             add_enable = ''
                         else
                             add_enable = 'disabled="disabled"'
                         reduce_enable = 'disabled="disabled"'
-                        var newtr = ['<tr class="goumaitiaomu" jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '" tiaomahao="'+data.yifu.tiaomahao+'" shuliang="1">',
+                        var newtr = ['<tr class="goumaitiaomu" jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '" tiaomahao="'+data.yifu.tiaomahao+'" yifuname="'+data.yifu.name+'" shuliang="1">',
                             '  <td class="text-left">' + data.yifu.name + '</td>',
                             '  <td class="shuliang">' + 1 + '</td>',
                             '  <td>' + data.yifu.jiage + '</td>',
@@ -220,63 +248,110 @@
                             '  <td><div class="btn-group">',
                             '  <a class="btn btn-xs btn-warning yifu_add" ' + add_enable + '> + </a>',
                             '  <a class="btn btn-xs btn-danger yifu_delete" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>',
-
                             '  <a class="btn btn-xs btn-warning yifu_reduce" ' + reduce_enable + '> - </a>',
                             '  </div></td></tr>'].join("");
-
                         $("#suogoushangpin").prepend(newtr)
-                        addnewitem(data.yifu.jiage)
-                        $("#yifu_search").val(null).trigger("change");
-                    }
+                        
+                        
+                        
+                        arr.push(data.yifu.tiaomahao)
 
+                        console.log(arr)
+
+                            Messenger().post({
+                              message: "添加了  "+data.yifu.name,
+                              type: "info"
+                            });
+                        addnewitem(data.yifu.jiage)
+                        
+                    }
                 })
 
+
+                }
+                else
+                {
+                    
+                   $(".goumaitiaomu[tiaomahao="+e.params.data.id+"]>td>div>a.yifu_add").trigger('click')
+                }
+                $("#yifu_search").val(null).trigger("change");
+
+             
             });
             $(document).on('click', ".yifu_add", function () {
-                if ($(this).attr('disabled') == 'disabled')
-                    return
                 tmp = $(this).parent().parent().parent()
+                if ($(this).attr('disabled') == 'disabled')
+                {
+                  
+
+                    Messenger().post({
+                              message: tmp.attr('yifuname') + "  没库存了，不能再加了!",
+                              type: "error"
+                            });
+                    return;
+                }
+                
+                arr.push(tmp.attr('tiaomahao'))
+                          Messenger().post({
+                              message: "加了一件  "+tmp.attr('yifuname'),
+                              type: "info"
+                            });
+                
                 zizeng_shuxing(tmp, 'shuliang', 1)
                 addnewitem(tmp.attr('jiage'))
                 zizeng_text(tmp.children('.shuliang'), 1)
-
-
                 if (tmp.attr('shuliang') == tmp.attr('kucun'))
                     tmp.find('.yifu_add').attr('disabled', 'disabled')
                 tmp.find('.yifu_reduce').removeAttr('disabled')
-
+                console.log(arr)
             });
             $(document).on('click', ".yifu_reduce", function () {
-
+                tmp = $(this).parent().parent().parent()
                 if ($(this).attr('disabled') == 'disabled')
                     return
-                tmp = $(this).parent().parent().parent()
-                zizeng_shuxing(tmp, 'shuliang', -1)
-                addnewitem(0 - parseInt(tmp.attr('jiage')))
-                zizeng_text(tmp.children('.shuliang'), -1)
 
+                $(arr).each(function(x,s){
+                    if(s == tmp.attr('tiaomahao'))
+                    {
+                        arr.remove(s)
+                        return false;
+                    }
+                
+                })
+
+                
+                zizeng_shuxing(tmp, 'shuliang', -1)
+                deleteitem(parseInt(tmp.attr('jiage')))
+                zizeng_text(tmp.children('.shuliang'), -1)
 
                 if (tmp.attr('shuliang') == '1')
                     tmp.find('.yifu_reduce').attr('disabled', 'disabled')
                 tmp.find('.yifu_add').removeAttr('disabled')
-
+                console.log(arr)
             });
 
 
             $(document).on('click', "#action", function () {
-
+                var kehucellphone = $("#huiyuan_search").val()
+                 if(arr.length && kehucellphone)
                 swal({
                     title: "提醒",
-                    text: "确定要完全成交易？",
+                    text: "确定要完成交易？",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "确定",
                     closeOnConfirm: false
                 }, function () {
-                    jiluzaian()
-                 
+                        jiluzaian(kehucellphone)
                 });
+            else
+                    {
+                                       Messenger().post({
+                              message: "还未选择衣服或者会员!",
+                              type: "error"
+                            });
+                    }
 
 
             })
@@ -313,33 +388,28 @@
             $("#shuliangheji").text(shuliangnow)
             $("#jiageheji").text(jiagenow)
             set_yinfukuan()
+            console.log(shuliangnow)
         }
         set_yinfukuan = function () {
             $("#yingfukuan").val($("#jiageheji").text())
 
         }
-        jiluzaian = function () {
-            var huowucount = 0;
-            var arrList = []; 
-            var flag = false
-            var kehucellphone = $("#huiyuan_search").val()
-            $("#suogoushangpin .goumaitiaomu").each(function(x,s){
-                arrList.push($(s).attr('tiaomahao')); 
-                huowucount++;
-            })
+        jiluzaian = function (kehucellphone) {
 
-            if(huowucount && kehucellphone)   {
-               $.get("/admin/dzz/xiaofeijilu/ok/",{kehu:kehucellphone,yifu:arrList.join("__")},function(fb,status){
+
+    
+               $.get("/admin/dzz/xiaofeijilu/ok/",{kehu:kehucellphone,yifu:arr.join("__")},function(fb,status){
                     if(fb && fb.data)
-                    swal("搞定!", "继续收银!", "success");
-                else
-                    swal("错误!", "没有衣服或者会员!", "error");
+
+                    Messenger().post({
+                              message: "已记录，请继续收银!",
+                              type: "success"
+                            });
+               
+                  
+         
                  });
-            }
-            else
-            {
-                
-            }
+
             
             
         }

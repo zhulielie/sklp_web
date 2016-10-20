@@ -160,6 +160,7 @@ class JiagewenjianAdmin(admin.ModelAdmin):
 
     actions = ['wenjiandaoru']
 
+
     def wenjiandaoru(self, request, queryset):
         notcount = 0
         errcount = 0
@@ -273,11 +274,8 @@ class HuiyuanAdmin(admin.ModelAdmin):
                     Huiyuan.objects.create(zongxiaofeicishu=random.randint(0, 20), name=name,
                                            cellphone='139%s' % cellphone, jifen=random.randint(10, 500),
                                            last_xiaofeijine = '%s' % random.randint(1,100),
-                                           zongxiaofeijine = '%s' % random.randint(100,5000),
-                                           last_xiaofei = '%s-%s-%s' % (
-                                           random.randint(1960, 2000), random.randint(1, 12), random.randint(1, 31)),
-                                           birthday='%s-%s-%s' % (
-                                           random.randint(1960, 2000), random.randint(1, 12), random.randint(1, 31)))
+                                           zongxiaofeijine = '%s' % random.randint(100,5000)
+                                        )
                 except Exception as e:
                     print e
         elif request.GET.get('clearhy', '') == '1':
@@ -306,7 +304,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
 
     def jiluzaian(self, request):
         fb = {}
-        fb['data'] = True
+        fb['data'] = False
         kehu = request.GET.get('kehu', '')
         yifu = request.GET.get('yifu','')
 
@@ -315,13 +313,20 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         jilu = Xiaofeijilu(huiyuan=huiyuan)
         yifus = yifu.split('__')
         jilu.save()
-        for yf in yifus:
-            syifu = Yifu.objects.filter(tiaomahao=yf)[0]
+        try:
+            for yf in yifus:
+                
+                syifu = Yifu.objects.filter(tiaomahao=yf,sold=False)[0]
 
-            jilu.yifu.add(syifu) 
-            syifu.sold= True
-            syifu.save()
-        
+                jilu.yifu.add(syifu) 
+                syifu.sold= True
+                syifu.save()
+            fb['data'] = True
+        except Exception as e:
+            print e
+            fb['data'] = False
+            jilu.delete()
+
         
         return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")
 
@@ -331,11 +336,27 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
             # Include common variables for rendering the admin template.
             self.admin_site.each_context(request),
             # Anything else you want in the context...
-            yifu=Yifu.objects.all(),
+            yifu=Yifu.objects.filter(sold=False),
             huiyuan=Huiyuan.objects.all()
 
         )
         return TemplateResponse(request, "shouyin.html", context)
+
+    actions = ['deletejilu']
+    
+
+    def deletejilu(self, request, queryset):
+        yifucount = 0
+
+        for one in queryset.all():
+            for x in one.yifu.all():
+                yifucount += 1
+                one.yifu.remove(x)
+            one.delete()
+          
+        self.message_user(request, "关联:%s件衣服." % yifucount)
+
+    deletejilu.short_description = '删除记录但不删除衣服'
 
 
 admin.site.register(Yifu, YiFuAdmin)
