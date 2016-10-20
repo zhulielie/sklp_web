@@ -310,35 +310,34 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         yifu = request.GET.get('yifu','')
         jine = request.GET.get('jine','0')
 
-        
-        huiyuan = Huiyuan.objects.get(cellphone=kehu)
-        jilu = Xiaofeijilu(huiyuan=huiyuan)
-        jilu.xiaofeijine=int(jine)
-        print jine
-        jilu.save()
-        yifus = yifu.split('__')
-        try:
-            for yf in yifus:
-                
-                syifu = Yifu.objects.filter(tiaomahao=yf,sold=False)
-                if len(syifu) > 0:
-                    syifu = syifu[0]
-                else:
-                    print "error" 
-                jilu.yifu.add(syifu) 
-                syifu.sold= True
-                syifu.save()
-            fb['data'] = True
-        except Exception as e:
-            print e
-            fb['data'] = False
-            jilu.delete()
+        if kehu and yifu and jine:
+            huiyuan = Huiyuan.objects.get(cellphone=kehu)
+            jilu = Xiaofeijilu(huiyuan=huiyuan,xiaofeijine=int(jine))
+            
+            jilu.save()
+            yifus = yifu.split('__')
+            try:
+                for yf in yifus:
+                    
+                    syifu = Yifu.objects.filter(tiaomahao=yf,sold=False)
+                    if len(syifu) > 0:
+                        syifu = syifu[0]
+                    else:
+                        print "error" 
+                    jilu.yifu.add(syifu) 
+                    syifu.sold= True
+                    syifu.save()
+                fb['data'] = True
+            except Exception as e:
+                print e
+                fb['data'] = False
+                jilu.delete()
         return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")        
 
 
     def today(self, request):
         ""
-        fb = {"data": False,"jine":0}
+        fb = {"data": False,"jine":0,"bishu":0,"last":0}
         try:
             import datetime
             now = datetime.datetime.now()
@@ -346,16 +345,14 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
             xfs = Xiaofeijilu.objects.filter(xiaofeishijian__gt=start)    
             jine = map(lambda x:x.xiaofeijine , xfs)
             fb['jine'] = sum(jine)
-            
+            fb['last'] = xfs.order_by('-xiaofeishijian')[0].xiaofeijine
+            fb['bishu'] = len(xfs)          
         except Exception as e:
             print e
+
             fb['data'] = False
 
         return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")
-
-
-
-
 
 
     def my_view(self, request):

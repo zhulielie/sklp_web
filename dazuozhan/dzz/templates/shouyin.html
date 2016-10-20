@@ -18,6 +18,18 @@
             height: 39px;
 
         }
+        .select2-selection__rendered
+        {
+             color: #fff !important;
+             font-size: 20px;
+
+             font-weight: bold;
+        }
+
+        .form-control[disabled],.select2-selection__rendered{
+
+            background-color: #000;
+        }
         .input-group-addon
         {
 
@@ -125,14 +137,16 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">会员姓名</div>
-                            <input class="form-control" type="text" id="huiyuanxingming" placeholder="0">
+                            <input class="form-control" disabled="disabled" type="text" id="huiyuanxingming" placeholder="0" style="cursor: pointer;color: #fff;
+    font-size: 30px;" title="自动获得">
                         </div>
                     </div>
                     <div class="form-group">
                         <div>
                             <div class="input-group">
                                 <div class="input-group-addon">手机号</div>
-                                <input class="form-control" type="text" id="cellphone" placeholder="0">
+                                <input class="form-control" disabled="disabled" type="text" id="cellphone" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 35px;" title="自动获得">
                             </div>
                         </div>
                     </div>
@@ -140,7 +154,8 @@
                         <div>
                             <div class="input-group">
                                 <div class="input-group-addon">积分</div>
-                                <input class="form-control" type="text" id="jifen" placeholder="0">
+                                <input class="form-control" disabled="disabled" type="text" id="jifen" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 35px;" title="自动获得">
                             </div>
                         </div>
                     </div>
@@ -174,14 +189,16 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon">应付金额</div>
-                            <input class="form-control" type="text" id="yingfukuan" placeholder="0">
+                            <input class="form-control" type="text" disabled="disabled" id="yingfukuan" yfk="0" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 35px;" title="自动获得">
                         </div>
                     </div>
                     <div class="form-group">
                         <div>
                             <div class="input-group">
-                                <div class="input-group-addon">兑换积分</div>
-                                <input class="form-control" type="text" placeholder="0">
+                                <div class="input-group-addon">获得积分</div>
+                                <input class="form-control" type="text" id="huodejifen" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 35px;">
                             </div>
                         </div>
                     </div>
@@ -189,15 +206,17 @@
                         <div>
                             <div class="input-group">
                                 <div class="input-group-addon">实付金额</div>
-                                <input class="form-control" type="text" placeholder="0" id="shifujine">
+                                <input class="form-control" type="text" id="shifujine" placeholder="0" style="color: #d9534f;
+    font-size: 35px;" >
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div>
                             <div class="input-group">
-                                <div class="input-group-addon">积分抵扣</div>
-                                <input class="form-control" type="text" placeholder="0">
+                                <div class="input-group-addon">抵扣积分</div>
+                                <input class="form-control" type="text" id="dikoujifen" placeholder="0"style="cursor: pointer;color: #d9534f;
+    font-size: 35px;">  <div class="input-group-addon" id="use_all" style="cursor: pointer;">使用全部积分</div>
                             </div>
                         </div>
                     </div>
@@ -276,6 +295,11 @@
         };
         $(function () {
 
+                $.get("/admin/dzz/xiaofeijilu/today/",function (data) {
+                    $("#today_jine").text(data.jine)
+                    $("#last_jine").text(data.last)
+                    $("#today_total").text(data.bishu)
+                })
                  $(document).on("mouseover mouseout",".goumaitiaomu",function(event){
                      if(event.type == "mouseover"){
                        
@@ -288,8 +312,70 @@
 
                     })
 
+                $(document).on("change","#shifujine",function(){
+                    jifen = 0;
+                    if(parseInt($(this).val()))
+                    {
+                        jifen = parseInt($(this).val());
+    
+                        if(jifen%10>0)
+                            jifen = parseInt(jifen*0.1)+1
+                        else
+                            jifen = jifen*0.1
+                        
+
+                    }
+                    $("#huodejifen").val(jifen)
+                })
 
 
+                
+                $(document).on("change","#dikoujifen",function(){
+                    jifen = 0;
+                    if(parseInt($("#yingfukuan").val()))
+                    {
+                        jifen = parseInt($(this).val());
+                        shijixuyaofukuan = parseInt($("#yingfukuan").attr("yfk")-jifen)
+                        if(shijixuyaofukuan <0)
+                            shijixuyaofukuan = 0
+                        $("#yingfukuan").val($("#yingfukuan").attr("yfk")+" - "+jifen+" = "+shijixuyaofukuan)
+                    }
+                    
+                })
+
+                $(document).on("click","#use_all",function(){
+                    if(parseInt($("#yingfukuan").attr('yfk')) >0)
+                    {
+                        if(parseInt($("#jifen").val()) > parseInt($("#yingfukuan").attr('yfk')))
+                        {
+                            $("#dikoujifen").val($("#yingfukuan").attr('yfk'))
+                                Messenger().post({
+                              message: "全部积分用不完，使用部分积分  "+$("#yingfukuan").attr('yfk'),
+                              type: "info"
+                            });
+                        }
+                        else
+                        {
+                            $("#dikoujifen").val($("#jifen").val())
+                               Messenger().post({
+                              message: "使用全部积分  "+$("#jifen").val(),
+                              type: "info"
+                            });
+                        }
+
+                        $("#dikoujifen").trigger('change')
+
+                    }
+                    else
+                    {
+
+                               Messenger().post({
+                              message: "还未选择衣服或者会员!",
+                              type: "error"
+                            });
+                    }
+                    
+                })
             $(document).on('click', ".yifu_delete", function () {
                         tmp = $(this).parent().parent().parent()
 
@@ -519,6 +605,7 @@
             console.log(shuliangnow)
         }
         set_yinfukuan = function () {
+            $("#yingfukuan").attr("yfk",$("#jiageheji").text())
             $("#yingfukuan").val($("#jiageheji").text())
         }
         jiluzaian = function (kehucellphone,jine) {
@@ -530,7 +617,14 @@
                               type: "success"
                             });
 
+                        $("#today_jine").text(parseInt($("#today_jine").text())+parseInt(jine))
+                        $("#last_jine").text(jine)
+                        $("#today_total").text(parseInt($("#today_total").text())+1)
 
+
+                        $("#yingfukuan").val("")
+                        $("#yingfukuan").attr("yfk","0")
+                        $("#shifujine").val("")
                     }
                  });  
         }
