@@ -298,6 +298,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         my_urls = [
             url(r'^shouyin/$', self.my_view),
             url(r'^ok/$', self.jiluzaian),
+            url(r'^today/$', self.today),
         ]
         return my_urls + urls
 
@@ -307,17 +308,23 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         fb['data'] = False
         kehu = request.GET.get('kehu', '')
         yifu = request.GET.get('yifu','')
+        jine = request.GET.get('jine','0')
 
         
         huiyuan = Huiyuan.objects.get(cellphone=kehu)
         jilu = Xiaofeijilu(huiyuan=huiyuan)
-        yifus = yifu.split('__')
+        jilu.xiaofeijine=int(jine)
+        print jine
         jilu.save()
+        yifus = yifu.split('__')
         try:
             for yf in yifus:
                 
-                syifu = Yifu.objects.filter(tiaomahao=yf,sold=False)[0]
-
+                syifu = Yifu.objects.filter(tiaomahao=yf,sold=False)
+                if len(syifu) > 0:
+                    syifu = syifu[0]
+                else:
+                    print "error" 
                 jilu.yifu.add(syifu) 
                 syifu.sold= True
                 syifu.save()
@@ -326,9 +333,30 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
             print e
             fb['data'] = False
             jilu.delete()
+        return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")        
 
-        
+
+    def today(self, request):
+        ""
+        fb = {"data": False,"jine":0}
+        try:
+            import datetime
+            now = datetime.datetime.now()
+            start = now - datetime.timedelta(hours=23, minutes=59, seconds=59)
+            xfs = Xiaofeijilu.objects.filter(xiaofeishijian__gt=start)    
+            jine = map(lambda x:x.xiaofeijine , xfs)
+            fb['jine'] = sum(jine)
+            
+        except Exception as e:
+            print e
+            fb['data'] = False
+
         return HttpResponse(json.dumps(serializer(fb)), content_type="application/json")
+
+
+
+
+
 
     def my_view(self, request):
         # ...
