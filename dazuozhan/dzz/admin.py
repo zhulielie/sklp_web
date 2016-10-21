@@ -309,6 +309,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         kehu = request.GET.get('kehu', '')
         yifu = request.GET.get('yifu','')
         jine = request.GET.get('jine','0')
+        dedaojifen = request.GET.get('dedaojifen','0')
 
         if kehu and yifu and jine:
             huiyuan = Huiyuan.objects.get(cellphone=kehu)
@@ -327,6 +328,8 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
                     jilu.yifu.add(syifu) 
                     syifu.sold= True
                     syifu.save()
+                huiyuan.jifen = huiyuan.jifen + int(dedaojifen)
+                huiyuan.save()
                 fb['data'] = True
             except Exception as e:
                 print e
@@ -339,10 +342,10 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         ""
         fb = {"data": False,"jine":0,"bishu":0,"last":0}
         try:
-            import datetime
-            now = datetime.datetime.now()
-            start = now - datetime.timedelta(hours=23, minutes=59, seconds=59)
-            xfs = Xiaofeijilu.objects.filter(xiaofeishijian__gt=start)    
+            from django.utils.timezone import now, timedelta
+            start = now().date()
+            end = start + timedelta(days=1)
+            xfs = Xiaofeijilu.objects.filter(xiaofeishijian__range=(start, end))    
             jine = map(lambda x:x.xiaofeijine , xfs)
             fb['jine'] = sum(jine)
             fb['last'] = xfs.order_by('-xiaofeishijian')[0].xiaofeijine

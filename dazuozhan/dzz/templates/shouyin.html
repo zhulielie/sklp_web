@@ -1,82 +1,78 @@
-{% extends "admin/base_site.html" %}
-{% block extrahead %}
-    <link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.css">
-    <link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/google.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/messenger/1.5.0/css/messenger.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/messenger/1.5.0/css/messenger-theme-future.min.css">
-    {#    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/chosen/1.6.2/chosen.min.css">#}
+{% extends "admin/base_site.html" %} {% block extrahead %}
+<link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="http://zcommon.oss-cn-shanghai.aliyuncs.com/google.css">
+<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/messenger/1.5.0/css/messenger.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/messenger/1.5.0/css/messenger-theme-future.min.css">
+<style type="text/css">
+body {
+    background-color: #79aec8 !important;
+}
 
+.btn-warning {
+    color: #fff !important;
+}
 
-    <style type="text/css" >
-        body
-        {
+tr {
+    height: 39px;
+}
 
-            background-color: #79aec8 !important;
+.badge {
+    background-color: red
+}
 
-        }
-        
-        tr{
+.select2-selection__rendered {
+    color: #fff !important;
+    font-size: 20px;
+    font-weight: bold;
+}
 
-            height: 39px;
+.form-control[disabled],
+.select2-selection__rendered {
+    background-color: #000;
+}
 
-        }
-        .select2-selection__rendered
-        {
-             color: #fff !important;
-             font-size: 20px;
+.input-group-addon {
+    width: 100px
+}
 
-             font-weight: bold;
-        }
+.form-control {
+    text-align: center;
+}
 
-        .form-control[disabled],.select2-selection__rendered{
+.input-group {
+    width: 100%;
+}
 
-            background-color: #000;
-        }
-        .input-group-addon
-        {
-
-
-            width: 100px
-        }
-        .form-control
-        {
-            text-align: center;
-        }
-
-        .input-group
-{
-
-            width: 100%;
-        }
-    </style>
-{% endblock %}
-{% block content %}
-    <div class="container-fluid">
-        <div class="row-fluid">
-
-            <div class="col-lg-8">
-                <div class="row-fluid">
-                    <div class="">
-                        <select id="yifu_search" style="width:100%;">
-                            <option></option>
-                            {% for x in yifu %}
-                                <option value="{{ x.tiaomahao }}">{{ x.name }} {{ x.yanse }} {{ x.guige }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+.table {
+    background-color: #fff
+}
+</style>
+{% endblock %} {% block content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-lg-8">
+            <div class="row-fluid">
+                <div class="">
+                    <select id="yifu_search" style="width:100%;">
+                        <option></option>
+                        {% for x in yifu %}
+                        <option value="{{ x.tiaomahao }}">{{ x.name }} {{ x.yanse }} {{ x.guige }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <br>
-                <div class="row-fluid text-center">
-                    <div class="">
-                        <div style="text-align: left"><span class="label label-success">选购商品如下</span></div>
-                        <br>
-                        <table class="table table-striped ">
-                            <thead>
-                            <tr >
+            </div>
+            <br>
+            <div class="row-fluid text-center">
+                <div class="">
+                    <div style="text-align: left"><span class="label label-success">选购商品如下</span></div>
+                    <br>
+                    <table class="table ">
+                        <thead>
+                            <tr>
                                 <th style="width: 200px;overflow: hidden">
                                     款号
                                 </th>
@@ -95,8 +91,8 @@
                                 <th style="width:225px;">
                                 </th>
                             </tr>
-                            </thead>
-                            <tbody id="suogoushangpin">
+                        </thead>
+                        <tbody id="suogoushangpin">
                             <tr>
                                 <th>
                                 </th>
@@ -113,549 +109,540 @@
                                 <th>
                                 </th>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-                 <div class="col-lg-12 text-center"><a id="action" class="btn btn-lg btn-warning" href="#">收款确认</a></div>
             </div>
-            <div class="col-lg-4" style="border-left:  1px solid ">
-                    
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab">
-      <h4 class="panel-title">
+            <div class="col-lg-12 text-center"><a id="action" class="btn btn-lg btn-warning" href="#">收款确认</a></div>
+        </div>
+        <div class="col-lg-4" style="border-left:  1px solid ">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
         <a data-toggle="collapse"  href="#huiyuanxinxi" aria-expanded="true" aria-controls="huiyuanxinxi">
           会员信息
         </a>
       </h4>
-    </div>
-    <div id="huiyuanxinxi" class="panel-collapse collapse in" role="tabpanel" >
-      <div class="panel-body">
-         
-                    <div class="text-center">
-                        <select id="huiyuan_search" style="width:100%;">
-                            <option></option>
-                            {% for x in huiyuan %}
-                                <option value='{{ x.cellphone }}'>{{ x.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <br/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">会员姓名</div>
-                            <input class="form-control" disabled="disabled" type="text" id="huiyuanxingming" placeholder="0" style="cursor: pointer;color: #fff;
+                </div>
+                <div id="huiyuanxinxi" class="panel-collapse collapse in" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <select id="huiyuan_search" style="width:100%;">
+                                <option></option>
+                                {% for x in huiyuan %}
+                                <option value='{{ x.cellphone }}'>{{ x.name }} {{ x.cellphone }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="form-group" hidden="hidden">
+                            <div class="input-group">
+                                <div class="input-group-addon">会员姓名</div>
+                                <input class="form-control" disabled="disabled" type="text" id="huiyuanxingming" placeholder="0" style="cursor: pointer;color: #fff;
     font-size: 30px;" title="自动获得">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <div class="input-group">
-                                <div class="input-group-addon">手机号</div>
-                                <input class="form-control" disabled="disabled" type="text" id="cellphone" placeholder="0" style="cursor: pointer;color: #d9534f;
+                        <div class="form-group" hidden="hidden">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-addon">手机号</div>
+                                    <input class="form-control" disabled="disabled" type="text" id="cellphone" placeholder="0" style="cursor: pointer;color: #d9534f;
     font-size: 35px;" title="自动获得">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-addon">积分</div>
+                                    <input class="form-control" disabled="disabled" type="text" id="jifen" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 35px;" title="自动获得">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div>
-                            <div class="input-group">
-                                <div class="input-group-addon">积分</div>
-                                <input class="form-control" disabled="disabled" type="text" id="jifen" placeholder="0" style="cursor: pointer;color: #d9534f;
-    font-size: 35px;" title="自动获得">
-                            </div>
-                        </div>
-                    </div>
-
-               
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" >
-      <h4 class="panel-title">
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title">
         <a class="collapsed" data-toggle="collapse"  aria-expanded="true" href="#zhifuxinxi" aria-controls="zhifuxinxi">
          支付信息
         </a>
       </h4>
-    </div>
-    <div id="zhifuxinxi" class="panel-collapse collapse in" role="tabpanel" >
-      <div class="panel-body">
-                 
-      
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">应付金额</div>
-                            <input class="form-control" type="text" disabled="disabled" id="yingfukuan" yfk="0" placeholder="0" style="cursor: pointer;color: #d9534f;
+                </div>
+                <div id="zhifuxinxi" class="panel-collapse collapse in" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">应付金额</div>
+                                <input class="form-control" type="text" disabled="disabled" id="yingfukuan" yfk="0" placeholder="0" style="cursor: pointer;color: #d9534f;
     font-size: 35px;" title="自动获得">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <div class="input-group">
-                                <div class="input-group-addon">获得积分</div>
-                                <input class="form-control" type="text" id="huodejifen" placeholder="0" style="cursor: pointer;color: #d9534f;
+                        <div class="form-group">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-addon">获得积分</div>
+                                    <input class="form-control" type="text" id="huodejifen" placeholder="0" style="cursor: pointer;color: #d9534f;
     font-size: 35px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-addon">实付金额</div>
+                                    <input class="form-control" type="text" id="shifujine" placeholder="0" style="color: #d9534f;
+    font-size: 35px;">
+                                    <div class="input-group-addon" id="use_all_jine" style="cursor: pointer;">全款</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-addon">抵扣积分</div>
+                                    <input class="form-control" type="text" id="dikoujifen" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 35px;">
+                                    <div class="input-group-addon" id="use_all" style="cursor: pointer;">使用全部积分</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div>
-                            <div class="input-group">
-                                <div class="input-group-addon">实付金额</div>
-                                <input class="form-control" type="text" id="shifujine" placeholder="0" style="color: #d9534f;
-    font-size: 35px;" >
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <div class="input-group">
-                                <div class="input-group-addon">抵扣积分</div>
-                                <input class="form-control" type="text" id="dikoujifen" placeholder="0"style="cursor: pointer;color: #d9534f;
-    font-size: 35px;">  <div class="input-group-addon" id="use_all" style="cursor: pointer;">使用全部积分</div>
-                            </div>
-                        </div>
-                    </div>
-                
-      </div>
-    </div>
-  </div>
-
-
-           <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingThree">
-      <h4 class="panel-title">
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
         <a class="collapsed" data-toggle="collapse" aria-expanded="true" href="#qitaxinxi"  aria-controls="qitaxinxi">
           其他信息
         </a>
       </h4>
-    </div>
-    <div id="qitaxinxi" class="panel-collapse collapse in" role="tabpanel">
-      <div class="panel-body">
-               
-                   
-                       <ul class="list-group">
-                      <li class="list-group-item">
-                        <span class="badge" id="today_jine">0</span>
-                        今日金额
-                      </li>
-                       <li class="list-group-item">
-                        <span class="badge" id="last_jine">0</span>
-                        上一次金额
-                      </li>
-                       <li class="list-group-item">
-                        <span class="badge" id="today_total">0</span>
-                        今日笔数
-                      </li>
-                       <li class="list-group-item">
-                        <span class="badge"></span>
-                        查看
-                      </li>
-                    </ul>
-                
-      </div>
-    </div>
-  </div>    
-               
- 
-                            
+                </div>
+                <div id="qitaxinxi" class="panel-collapse collapse in" role="tabpanel">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge" id="today_jine">0</span> 今日金额
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge" id="last_jine">0</span> 上一次金额
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge" id="today_total">0</span> 今日笔数
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge"></span> 查看
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-12 text-center ">
-                <hr>
-            </div>
-           
+        </div>
+        <div class="col-lg-12 text-center ">
+            <hr>
         </div>
     </div>
-{% endblock %}
-{% block zll_footer %}
+</div>
+{% endblock %} {% block zll_footer %}
+<script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/jquery.3.1.1.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/chosen/1.6.2/chosen.jquery.min.js"></script>
+<script src="//cdn.bootcss.com/select2/4.0.3/js/select2.full.min.js"></script>
+<script src="//cdn.bootcss.com/messenger/1.5.0/js/messenger.min.js"></script>
+<script src="//cdn.bootcss.com/messenger/1.5.0/js/messenger-theme-future.min.js"></script>
+<script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.js"></script>
+<script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/pinyin.js"></script>
+<script type="application/javascript">
+matchStart = function(term, text, option) {
 
-    <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/jquery.3.1.1.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    {#    <script src="//cdn.bootcss.com/chosen/1.6.2/chosen.jquery.min.js"></script>#}
-    <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
-    <script src="//cdn.bootcss.com/messenger/1.5.0/js/messenger.min.js"></script>
-    <script src="//cdn.bootcss.com/messenger/1.5.0/js/messenger-theme-future.min.js"></script>
-
-    {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg"></script>#}
-    {#    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/npm.js"></script>#}
-    <script src="http://zcommon.oss-cn-shanghai.aliyuncs.com/sweetalert.min.js"></script>
-    <script type="application/javascript">
-
-        var arr =  new Array(); 
-        Array.prototype.remove = function(val) {
-        var index = this.indexOf(val);
-        if (index > -1) {
+    if (text.toUpperCase().indexOf(term.toUpperCase()) >= 0)
+        return true;
+    if (option.id.indexOf(term) >= 0)
+        return true;
+    return false;
+}
+var arr = new Array();
+Array.prototype.remove = function(val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
         this.splice(index, 1);
+    }
+};
+
+
+$(function() {
+
+    $._messengerDefaults = {
+        extraClasses: 'messenger-fixed messenger-theme-future messenger-on-bottom messenger-on-left'
+    }
+    $.get("/admin/dzz/xiaofeijilu/today/", function(data) {
+        $("#today_jine").text(data.jine)
+        $("#last_jine").text(data.last)
+        $("#today_total").text(data.bishu)
+    })
+    $(document).on("mouseover mouseout", ".goumaitiaomu", function(event) {
+        if (event.type == "mouseover") {
+
+            $(".goumaitiaomu[tiaomahao=" + $(this).attr('tiaomahao') + "]>td>div>a").show()
+        } else if (event.type == "mouseout") {
+
+            $(".goumaitiaomu[tiaomahao=" + $(this).attr('tiaomahao') + "]>td>div>a").hide()
         }
-        };
-        $(function () {
 
-                $._messengerDefaults = {
-                     extraClasses: 'messenger-fixed messenger-theme-future messenger-on-bottom messenger-on-left'
-                }
-                $.get("/admin/dzz/xiaofeijilu/today/",function (data) {
-                    $("#today_jine").text(data.jine)
-                    $("#last_jine").text(data.last)
-                    $("#today_total").text(data.bishu)
-                })
-                 $(document).on("mouseover mouseout",".goumaitiaomu",function(event){
-                     if(event.type == "mouseover"){
-                       
-                        $(".goumaitiaomu[tiaomahao="+$(this).attr('tiaomahao')+"]>td>div>a").show()
-                     }
-                     else if(event.type == "mouseout"){
-                    
-                       $(".goumaitiaomu[tiaomahao="+$(this).attr('tiaomahao')+"]>td>div>a").hide()
-                     }
+    })
 
-                    })
+    $(document).on("change", "#shifujine", function() {
+        jifen = 0;
+        if (parseInt($(this).val())) {
+            jifen = parseInt($(this).val());
 
-                $(document).on("change","#shifujine",function(){
-                    jifen = 0;
-                    if(parseInt($(this).val()))
-                    {
-                        jifen = parseInt($(this).val());
-    
-                        if(jifen%10>0)
-                            jifen = parseInt(jifen*0.1)+1
-                        else
-                            jifen = jifen*0.1
-                        
-
-                    }
-                    $("#huodejifen").val(jifen)
-                })
+            if (jifen % 10 > 0)
+                jifen = parseInt(jifen * 0.1) + 1
+            else
+                jifen = jifen * 0.1
 
 
-                
-                $(document).on("change","#dikoujifen",function(){
-                    jifen = 0;
-                    if(parseInt($("#yingfukuan").val()))
-                    {
-                        jifen = parseInt($(this).val());
-                        shijixuyaofukuan = parseInt($("#yingfukuan").attr("yfk")-jifen)
-                        if(shijixuyaofukuan <0)
-                            shijixuyaofukuan = 0
-                        $("#yingfukuan").val($("#yingfukuan").attr("yfk")+" - "+jifen+" = "+shijixuyaofukuan)
-                    }
-                    
-                })
+        }
+        $("#huodejifen").val(jifen)
+    })
 
-                $(document).on("click","#use_all",function(){
-                    if(parseInt($("#yingfukuan").attr('yfk')) >0 )
-                    {
-                        if( parseInt($("#cellphone").val()) >0)
-                        {
+    $(document).on("change", "#dikoujifen", function() {
+        jifen = 0;
+        if (parseInt($("#yingfukuan").val())) {
+            jifen = parseInt($(this).val());
+            shijixuyaofukuan = parseInt($("#yingfukuan").attr("yfk") - jifen)
+            if (shijixuyaofukuan < 0)
+                shijixuyaofukuan = 0
+            $("#yingfukuan").val($("#yingfukuan").attr("yfk") + " - " + jifen + " = " + shijixuyaofukuan)
+        }
 
-                            if(parseInt($("#jifen").val()) > parseInt($("#yingfukuan").attr('yfk')))
-                        {
-                            $("#dikoujifen").val($("#yingfukuan").attr('yfk'))
-                                Messenger().post({
-                              message: "全部积分用不完，使用部分积分  "+$("#yingfukuan").attr('yfk'),
-                              type: "info"
-                            });
-                        }
-                        else
-                        {
-                            $("#dikoujifen").val($("#jifen").val())
-                               Messenger().post({
-                              message: "使用全部积分  "+$("#jifen").val(),
-                              type: "info"
-                            });
-                        }
-                            $("#dikoujifen").trigger('change')
-                       
-                        }
-                        else{
-                         
-                              Messenger().post({
-                              message: "还未选择会员!",
-                              type: "error"
-                            });
-                              $("#huiyuan_search").focus();
-                               return;
-                        }
-                    }
-                    else
-                    {
-
-                               Messenger().post({
-                              message: "还未选择衣服!",
-                              type: "error"
-                            });
-                                $("#yifu_search").focus();
-                               
-                               return;
-                    }
-                    
-                })
-            $(document).on('click', ".yifu_delete", function () {
-                        tmp = $(this).parent().parent().parent()
-
-                        swal({
-                            title: "提醒",
-                            text: "确定要删除 "+tmp.attr('yifuname')+"?",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "确定",
-                            cancelButtonText:"取消",
-                            closeOnConfirm: true
-                        }, function () {
-                            for(var i=0;i<parseInt(tmp.attr('shuliang'));i++)
-                            {
-                                deleteitem(parseInt(tmp.attr('jiage')))
-                                $(arr).each(function(x,s){
-                                if(s == tmp.attr('tiaomahao'))
-                                    {
-                                        arr.remove(s)
-                                        return true;
-                                    }
-                                
-                                })
-                            }
+    })
+    $(document).on("click", "#use_all_jine", function() {
 
 
-                            tmp.remove()
-                            Messenger().post({
-                              message: tmp.attr('yifuname') + "  删除成功!",
-                              type: "success"
-                            })
-                         
-                        });
+        $("#shifujine").val($("#yingfukuan").attr("yfk"))
+        $("#shifujine").trigger("change")
 
 
-                    }
-            )
+    })
+    $(document).on("click", "#use_all", function() {
+        if (parseInt($("#yingfukuan").attr('yfk')) > 0) {
+            if (parseInt($("#cellphone").val()) > 0) {
 
-            $("#huiyuan_search").select2({placeholder: '选择一位会员'})
-            $("#yifu_search").select2({placeholder: '选择一件衣服'})
-
-            $("#huiyuan_search").on("select2:select", function (e) {
-                var nowvar = e.params.data.id
-                $.get('/admin/dzz/huiyuan/json_huiyuan/' + nowvar, {}, function (data) {
-                    if (data) {
-                        $("#huiyuanxingming").val(data.huiyuan.name)
-                        $("#jifen").val(data.huiyuan.jifen)
-                        $("#cellphone").val(data.huiyuan.cellphone)
-                    }
-                })
-
-            });
-
-            $("#yifu_search").on("select2:select", function (e) {
-                tmpflag = true
-                $(arr).each(function(x,s){
-                    if(s == e.params.data.id)
-                    {
-                        tmpflag = false
-                        return false;
-                    }
-                
-                })
-                
-                if(tmpflag)
-                {
-                    var nowvar = e.params.data.id
-                    $.get('/admin/dzz/yifu/json_yifu/' + nowvar, {}, function (data) {
-                    if (data) {
-                        if (parseInt(data.kucun) > 1)
-                            add_enable = ''
-                        else
-                            add_enable = 'disabled="disabled"'
-                        reduce_enable = 'disabled="disabled"'
-                        var newtr = ['<tr class="goumaitiaomu" jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '" tiaomahao="'+data.yifu.tiaomahao+'" yifuname="'+data.yifu.name+'" shuliang="1">',
-                            '  <td class="text-left">' + data.yifu.name + '</td>',
-                            '  <td class="shuliang">' + 1 + '</td>',
-                            '  <td>' + data.yifu.jiage + '</td>',
-                            '  <td class="xiaoji">' + data.yifu.jiage + '</td>',
-                            '  <td> ' + data.kucun + '</td>',
-                            '  <td><div class="btn-group">',
-                            '  <a class="btn btn-xs btn-warning yifu_add" ' + add_enable + '> + </a>',
-                            '  <a class="btn btn-xs btn-danger yifu_delete" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>',
-                            '  <a class="btn btn-xs btn-warning yifu_reduce" ' + reduce_enable + '> - </a>',
-                            '  </div></td></tr>'].join("");
-                        $("#suogoushangpin").prepend(newtr)
-                        
-                        
-                        
-                        arr.push(data.yifu.tiaomahao)
-
-                        console.log(arr)
-
-                            Messenger().post({
-                              message: "添加了  "+data.yifu.name,
-                              type: "info"
-                            });
-                        addnewitem(data.yifu.jiage)
-                        
-                    }
-                })
-
-
-                }
-                else
-                {
-                    
-                   $(".goumaitiaomu[tiaomahao="+e.params.data.id+"]>td>div>a.yifu_add").trigger('click')
-                }
-                $("#yifu_search").val(null).trigger("change");
-
-             
-            });
-            $(document).on('click', ".yifu_add", function () {
-                tmp = $(this).parent().parent().parent()
-                if ($(this).attr('disabled') == 'disabled')
-                {
-                  
-
+                if (parseInt($("#jifen").val()) > parseInt($("#yingfukuan").attr('yfk'))) {
+                    $("#dikoujifen").val($("#yingfukuan").attr('yfk'))
                     Messenger().post({
-                              message: tmp.attr('yifuname') + "  没库存了，不能再加了!",
-                              type: "error"
-                            });
-                    return;
+                        message: "全部积分用不完，使用部分积分  " + $("#yingfukuan").attr('yfk'),
+                        type: "info"
+                    });
+                } else {
+                    $("#dikoujifen").val($("#jifen").val())
+                    Messenger().post({
+                        message: "使用全部积分  " + $("#jifen").val(),
+                        type: "info"
+                    });
                 }
-                
-                arr.push(tmp.attr('tiaomahao'))
-                          Messenger().post({
-                              message: "加了一件  "+tmp.attr('yifuname'),
-                              type: "info"
-                            });
-                
-                zizeng_shuxing(tmp, 'shuliang', 1)
-                addnewitem(tmp.attr('jiage'))
-                zizeng_text(tmp.children('.shuliang'), 1)
-                if (tmp.attr('shuliang') == tmp.attr('kucun'))
-                    tmp.find('.yifu_add').attr('disabled', 'disabled')
-                tmp.find('.yifu_reduce').removeAttr('disabled')
-                console.log(arr)
-            });
-            $(document).on('click', ".yifu_reduce", function () {
-                tmp = $(this).parent().parent().parent()
-                if ($(this).attr('disabled') == 'disabled')
-                    return
+                $("#dikoujifen").trigger('change')
 
-                $(arr).each(function(x,s){
-                    if(s == tmp.attr('tiaomahao'))
-                    {
-                        arr.remove(s)
-                        return false;
-                    }
-                
-                })
+            } else {
 
                 Messenger().post({
-                              message: "减少一件  " + tmp.attr('yifuname'),
-                              type: "error"
-                        });
-                zizeng_shuxing(tmp, 'shuliang', -1)
-                deleteitem(parseInt(tmp.attr('jiage')))
-                zizeng_text(tmp.children('.shuliang'), -1)
-
-                if (tmp.attr('shuliang') == '1')
-                    tmp.find('.yifu_reduce').attr('disabled', 'disabled')
-                tmp.find('.yifu_add').removeAttr('disabled')
-                console.log(arr)
-            });
-
-
-            $(document).on('click', "#action", function () {
-                var kehucellphone = $("#huiyuan_search").val()
-                var jine = $("#shifujine").val()
-                 if(arr.length && kehucellphone)
-                swal({
-                    title: "提醒",
-                    text: "确定要完成交易？",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定",
-                    closeOnConfirm: true
-                }, function () {
-                        jiluzaian(kehucellphone,jine)
+                    message: "还未选择会员!",
+                    type: "error"
                 });
-            else
-                    {
-                                       Messenger().post({
-                              message: "还未选择衣服或者会员!",
-                              type: "error"
-                            });
+                $("#huiyuan_search").focus();
+                return;
+            }
+        } else {
+
+            Messenger().post({
+                message: "还未选择衣服!",
+                type: "error"
+            });
+            $("#yifu_search").focus();
+
+            return;
+        }
+
+    })
+    $(document).on('click', ".yifu_delete", function() {
+        tmp = $(this).parent().parent().parent()
+
+        swal({
+            title: "提醒",
+            text: "确定要删除 " + tmp.attr('yifuname') + "?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnConfirm: true
+        }, function() {
+            for (var i = 0; i < parseInt(tmp.attr('shuliang')); i++) {
+                deleteitem(parseInt(tmp.attr('jiage')))
+                $(arr).each(function(x, s) {
+                    if (s == tmp.attr('tiaomahao')) {
+                        arr.remove(s)
+                        return true;
                     }
 
+                })
+            }
 
+
+            tmp.remove()
+            Messenger().post({
+                message: tmp.attr('yifuname') + "  删除成功!",
+                type: "success"
+            })
+        });
+    })
+
+
+
+
+    $.fn.select2.amd.require(['select2/compat/matcher'], function(oldMatcher) {
+        $("#huiyuan_search").select2({
+            placeholder: '选择一位会员',
+            matcher: oldMatcher(matchStart)
+        })
+    });
+
+    $.fn.select2.amd.require(['select2/compat/matcher'], function(oldMatcher) {
+        $("#yifu_search").select2({
+            placeholder: '选择一件衣服',
+            matcher: oldMatcher(matchStart)
+        }).select2("open")
+    });
+
+
+
+    $("#huiyuan_search").on("select2:select", function(e) {
+        var nowvar = e.params.data.id
+        $.get('/admin/dzz/huiyuan/json_huiyuan/' + nowvar, {}, function(data) {
+            if (data) {
+                $("#huiyuanxingming").val(data.huiyuan.name)
+                $("#jifen").val(data.huiyuan.jifen)
+                $("#cellphone").val(data.huiyuan.cellphone)
+            }
+        })
+
+    });
+
+    $("#yifu_search").on("select2:select", function(e) {
+        tmpflag = true
+        $(arr).each(function(x, s) {
+            if (s == e.params.data.id) {
+                tmpflag = false
+                return false;
+            }
+
+        })
+
+        if (tmpflag) {
+            var nowvar = e.params.data.id
+            $.get('/admin/dzz/yifu/json_yifu/' + nowvar, {}, function(data) {
+                if (data) {
+                    if (parseInt(data.kucun) > 1)
+                        add_enable = ''
+                    else
+                        add_enable = 'disabled="disabled"'
+                    reduce_enable = 'disabled="disabled"'
+                    var newtr = ['<tr class="goumaitiaomu" jiage="' + data.yifu.jiage + '" kucun="' + data.kucun + '" tiaomahao="' + data.yifu.tiaomahao + '" yifuname="' + data.yifu.name + '" shuliang="1">',
+                        '  <td class="text-left">' + data.yifu.name + '</td>',
+                        '  <td class="shuliang">' + 1 + '</td>',
+                        '  <td>' + data.yifu.jiage + '</td>',
+                        '  <td class="xiaoji">' + data.yifu.jiage + '</td>',
+                        '  <td> ' + data.kucun + '</td>',
+                        '  <td><div class="btn-group">',
+                        '  <a class="btn btn-xs btn-warning yifu_add" ' + add_enable + '> + </a>',
+                        '  <a class="btn btn-xs btn-danger yifu_delete" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>',
+                        '  <a class="btn btn-xs btn-warning yifu_reduce" ' + reduce_enable + '> - </a>',
+                        '  </div></td></tr>'
+                    ].join("");
+                    $("#suogoushangpin").prepend(newtr)
+
+
+
+                    arr.push(data.yifu.tiaomahao)
+
+                    console.log(arr)
+
+                    Messenger().post({
+                        message: "添加了  " + data.yifu.name,
+                        type: "info"
+                    });
+                    addnewitem(data.yifu.jiage)
+
+                }
             })
 
-            $("#yifu_search").focus();
-            
+
+        } else {
+
+            $(".goumaitiaomu[tiaomahao=" + e.params.data.id + "]>td>div>a.yifu_add").trigger('click')
+        }
+        $("#yifu_search").val(null).trigger("change");
+
+
+    });
+    $(document).on('click', ".yifu_add", function() {
+        tmp = $(this).parent().parent().parent()
+        if ($(this).attr('disabled') == 'disabled') {
+
+
+            Messenger().post({
+                message: tmp.attr('yifuname') + "  没库存了，不能再加了!",
+                type: "error"
+            });
+            return;
+        }
+
+        arr.push(tmp.attr('tiaomahao'))
+        Messenger().post({
+            message: "加了一件  " + tmp.attr('yifuname'),
+            type: "info"
         });
-        zizeng_shuxing = function (someone, shuxing, shuzhi) {
-            someone.attr(shuxing, parseInt(someone.attr(shuxing)) + shuzhi)
 
-        }
-        zizeng_text = function (someone, shuzhi) {
-            someone.text(parseInt(someone.text()) + shuzhi)
+        zizeng_shuxing(tmp, 'shuliang', 1)
+        addnewitem(tmp.attr('jiage'))
+        zizeng_text(tmp.children('.shuliang'), 1)
+        if (tmp.attr('shuliang') == tmp.attr('kucun'))
+            tmp.find('.yifu_add').attr('disabled', 'disabled')
+        tmp.find('.yifu_reduce').removeAttr('disabled')
+        console.log(arr)
+    });
+    $(document).on('click', ".yifu_reduce", function() {
+        tmp = $(this).parent().parent().parent()
+        if ($(this).attr('disabled') == 'disabled')
+            return
 
-        }
+        $(arr).each(function(x, s) {
+            if (s == tmp.attr('tiaomahao')) {
+                arr.remove(s)
+                return false;
+            }
 
-        addnewitem = function (jiage) {
-            shuliangnow = 0
-            jiagenow = 0
-            shuliangnow = $("#shuliangheji").text()
-            jiagenow = $("#jiageheji").text()
-            shuliangnow = parseInt(shuliangnow) + 1
-            jiagenow = parseInt(jiagenow) + parseInt(jiage)
-            $("#shuliangheji").text(shuliangnow)
-            $("#jiageheji").text(jiagenow)
-            set_yinfukuan()
-        }
-        deleteitem = function (jiage) {
-            shuliangnow = 0
-            jiagenow = 0
-            shuliangnow = $("#shuliangheji").text()
-            jiagenow = $("#jiageheji").text()
-            shuliangnow = parseInt(shuliangnow) - 1
-            jiagenow = parseInt(jiagenow) - parseInt(jiage)
-            $("#shuliangheji").text(shuliangnow)
-            $("#jiageheji").text(jiagenow)
-            set_yinfukuan()
-            console.log(shuliangnow)
-        }
-        set_yinfukuan = function () {
-            $("#yingfukuan").attr("yfk",$("#jiageheji").text())
-            $("#yingfukuan").val($("#jiageheji").text())
-        }
-        jiluzaian = function (kehucellphone,jine) {
-               $.get("/admin/dzz/xiaofeijilu/ok/",{kehu:kehucellphone,yifu:arr.join("__"),jine:jine},function(fb,status){
-                    if(fb && fb.data)
-                    {
-                        Messenger().post({
-                              message: "已记录，请继续收银!",
-                              type: "success"
-                            });
+        })
 
-                        $("#today_jine").text(parseInt($("#today_jine").text())+parseInt(jine))
-                        $("#last_jine").text(jine)
-                        $("#today_total").text(parseInt($("#today_total").text())+1)
+        Messenger().post({
+            message: "减少一件  " + tmp.attr('yifuname'),
+            type: "error"
+        });
+        zizeng_shuxing(tmp, 'shuliang', -1)
+        deleteitem(parseInt(tmp.attr('jiage')))
+        zizeng_text(tmp.children('.shuliang'), -1)
+
+        if (tmp.attr('shuliang') == '1')
+            tmp.find('.yifu_reduce').attr('disabled', 'disabled')
+        tmp.find('.yifu_add').removeAttr('disabled')
+        console.log(arr)
+    });
 
 
-                        $("#yingfukuan").val("")
-                        $("#yingfukuan").attr("yfk","0")
-                        $("#shifujine").val("")
-                    }
-                 });  
+    $(document).on('click', "#action", function() {
+        var kehucellphone = $("#huiyuan_search").val()
+        var jine = $("#shifujine").val()
+        var shiyongjifen = parseInt($("#dikoujifen").val())
+        var huodejifen = parseInt($("#huodejifen").val())
+        if (arr.length && kehucellphone && jine && huodejifen)
+            swal({
+                title: "提醒",
+                text: "确定要完成交易？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: true
+            }, function() {
+                jiluzaian(kehucellphone, jine, huodejifen - shiyongjifen)
+
+            });
+        else {
+
+            if (jine);
+            else {
+
+                Messenger().post({
+                    message: "请输入实际付款金额!",
+                    type: "error"
+                });
+                $("#shifujine").focus()
+
+            }
+
+            if (kehucellphone);
+            else {
+                Messenger().post({
+
+                    message: "还未选择会员!",
+                    type: "error"
+                });
+            }
+            if (arr.length);
+            else {
+                Messenger().post({
+                    message: "还未选择衣服!",
+                    type: "error"
+                });
+            }
         }
-        
-    </script>
+
+
+    })
+
+
+});
+zizeng_shuxing = function(someone, shuxing, shuzhi) {
+    someone.attr(shuxing, parseInt(someone.attr(shuxing)) + shuzhi)
+
+}
+zizeng_text = function(someone, shuzhi) {
+    someone.text(parseInt(someone.text()) + shuzhi)
+
+}
+
+addnewitem = function(jiage) {
+    shuliangnow = 0
+    jiagenow = 0
+    shuliangnow = $("#shuliangheji").text()
+    jiagenow = $("#jiageheji").text()
+    shuliangnow = parseInt(shuliangnow) + 1
+    jiagenow = parseInt(jiagenow) + parseInt(jiage)
+    $("#shuliangheji").text(shuliangnow)
+    $("#jiageheji").text(jiagenow)
+    set_yinfukuan()
+}
+deleteitem = function(jiage) {
+    shuliangnow = 0
+    jiagenow = 0
+    shuliangnow = $("#shuliangheji").text()
+    jiagenow = $("#jiageheji").text()
+    shuliangnow = parseInt(shuliangnow) - 1
+    jiagenow = parseInt(jiagenow) - parseInt(jiage)
+    $("#shuliangheji").text(shuliangnow)
+    $("#jiageheji").text(jiagenow)
+    set_yinfukuan()
+    console.log(shuliangnow)
+}
+set_yinfukuan = function() {
+    $("#yingfukuan").attr("yfk", $("#jiageheji").text())
+    $("#yingfukuan").val($("#jiageheji").text())
+}
+jiluzaian = function(kehucellphone, jine, dedaojifen) {
+    $.get("/admin/dzz/xiaofeijilu/ok/", {
+        kehu: kehucellphone,
+        yifu: arr.join("__"),
+        jine: jine,
+        dedaojifen: dedaojifen
+    }, function(fb, status) {
+
+        location.reload()
+
+
+    });
+}
+</script>
 {% endblock %}
