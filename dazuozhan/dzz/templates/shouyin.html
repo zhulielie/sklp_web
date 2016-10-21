@@ -12,6 +12,12 @@
 
 
     <style type="text/css" >
+        body
+        {
+
+            background-color: #79aec8 !important;
+
+        }
         
         tr{
 
@@ -111,6 +117,7 @@
                         </table>
                     </div>
                 </div>
+                 <div class="col-lg-12 text-center"><a id="action" class="btn btn-lg btn-warning" href="#">收款确认</a></div>
             </div>
             <div class="col-lg-4" style="border-left:  1px solid ">
                     
@@ -267,7 +274,7 @@
             <div class="col-lg-12 text-center ">
                 <hr>
             </div>
-            <div class="col-lg-12 text-center"><a id="action" class="btn btn-lg btn-warning" href="#">收款确认</a></div>
+           
         </div>
     </div>
 {% endblock %}
@@ -295,6 +302,9 @@
         };
         $(function () {
 
+                $._messengerDefaults = {
+                     extraClasses: 'messenger-fixed messenger-theme-future messenger-on-bottom messenger-on-left'
+                }
                 $.get("/admin/dzz/xiaofeijilu/today/",function (data) {
                     $("#today_jine").text(data.jine)
                     $("#last_jine").text(data.last)
@@ -344,9 +354,12 @@
                 })
 
                 $(document).on("click","#use_all",function(){
-                    if(parseInt($("#yingfukuan").attr('yfk')) >0)
+                    if(parseInt($("#yingfukuan").attr('yfk')) >0 )
                     {
-                        if(parseInt($("#jifen").val()) > parseInt($("#yingfukuan").attr('yfk')))
+                        if( parseInt($("#cellphone").val()) >0)
+                        {
+
+                            if(parseInt($("#jifen").val()) > parseInt($("#yingfukuan").attr('yfk')))
                         {
                             $("#dikoujifen").val($("#yingfukuan").attr('yfk'))
                                 Messenger().post({
@@ -362,17 +375,29 @@
                               type: "info"
                             });
                         }
-
-                        $("#dikoujifen").trigger('change')
-
+                            $("#dikoujifen").trigger('change')
+                       
+                        }
+                        else{
+                         
+                              Messenger().post({
+                              message: "还未选择会员!",
+                              type: "error"
+                            });
+                              $("#huiyuan_search").focus();
+                               return;
+                        }
                     }
                     else
                     {
 
                                Messenger().post({
-                              message: "还未选择衣服或者会员!",
+                              message: "还未选择衣服!",
                               type: "error"
                             });
+                                $("#yifu_search").focus();
+                               
+                               return;
                     }
                     
                 })
@@ -571,6 +596,9 @@
 
 
             })
+
+            $("#yifu_search").focus();
+            
         });
         zizeng_shuxing = function (someone, shuxing, shuzhi) {
             someone.attr(shuxing, parseInt(someone.attr(shuxing)) + shuzhi)
