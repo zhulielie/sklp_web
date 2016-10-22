@@ -37,6 +37,9 @@ class Jiagewenjian(models.Model):
 #
 # class Guige(models.Model):
 #
+class YifuManager(models.Manager):
+    def all(self, keyword):
+        return self.order_by("sold")
 
 class Yifu(models.Model):
     name = models.CharField(max_length=32, verbose_name="名称")
@@ -49,12 +52,15 @@ class Yifu(models.Model):
     jifen = models.CharField(max_length=8, verbose_name="积分", default='', null=True, blank=True)
     dsq = models.CharField(max_length=8, verbose_name="记一分", default='', null=True, blank=True)
     sold = models.BooleanField(default=0,verbose_name="是否卖掉")
+
     # jifen = models.CharField(max_length=8,verbose_name="积分",default='',null=True)
+  
+        
 
     class Meta():
         verbose_name = "货物信息"
         verbose_name_plural = verbose_name
-
+        ordering = ['-sold']
     def __unicode__(self):
         return self.tiaomahao
 

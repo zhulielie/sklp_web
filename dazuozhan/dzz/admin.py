@@ -32,8 +32,37 @@ class YiFuAdmin(admin.ModelAdmin):
     #     return 'https://example.com' + url
     list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'qudao', 'jiage','sold')
     search_fields = ('name', 'tiaomahao')
-    list_filter = ('qudao',)
+    list_filter = ('qudao','sold','jiage')
     save_as = True
+    
+    def set_sold(self, request, queryset):
+        yifucount = 0
+        for one in queryset.all():
+
+            if one.sold == False:
+                yifucount += 1
+                one.sold = True
+                one.save()
+          
+        self.message_user(request, "关联:%s件衣服." % yifucount)
+
+    set_sold.short_description = '标记为卖掉'
+
+    actions =["set_sold","set_notsold"]
+    
+    def set_notsold(self, request, queryset):
+        yifucount = 0
+        for one in queryset.all():
+
+            if one.sold == True:
+                yifucount += 1
+                one.sold = False
+                one.save()
+          
+        self.message_user(request, "关联:%s件衣服." % yifucount)
+
+    set_notsold.short_description = '标记为在售'
+
 
     def json_yifu(self, request, iid):
         "提案查询和提交按钮的连接"
@@ -289,7 +318,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
     list_display = ('huiyuan', 'jifen', 'xiaofeijine', 'get_products', 'xiaofeishijian')
 
     def get_products(self, obj):
-        return format_html(" ".join(["<a href='/admin/dzz/yifu/%s'>%s</a>" % (p.pk, p.name) for p in obj.yifu.all()]))
+        return format_html(u"、".join(["<span class='label label-warning' ><a  style='color:#fff' href='/dzz/yifu/%s'>%s</a></span>" % (p.pk, p.name) for p in obj.yifu.all()]))
 
     get_products.short_description = '购买的物品'
 
