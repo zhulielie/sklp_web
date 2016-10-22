@@ -43,6 +43,7 @@ class YifuManager(models.Manager):
 
 class Yifu(models.Model):
     name = models.CharField(max_length=32, verbose_name="名称")
+    uploadfile = models.FileField(verbose_name="图片", upload_to='./',null=True,blank=True,default="default.png")
     tiaomahao = models.CharField(max_length=32, verbose_name="条码号")
     guige = models.CharField(max_length=32, verbose_name="规格")
     yanse = models.CharField(max_length=32, verbose_name="颜色")

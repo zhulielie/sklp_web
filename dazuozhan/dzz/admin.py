@@ -30,11 +30,18 @@ class YiFuAdmin(admin.ModelAdmin):
     # def view_on_site(self, obj):
     #     url = reverse('admin', kwargs={'name': obj.name})
     #     return 'https://example.com' + url
-    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'qudao', 'jiage','sold')
+    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'picture','qudao', 'jiage','sold')
     search_fields = ('name', 'tiaomahao')
     list_filter = ('qudao','sold','jiage')
     save_as = True
     
+    def picture(self, obj):
+        return format_html('''<img class="tooltip_templates" onclick="window.open('/static/default.png')" title="在新的一页打开" alt="服装图片" src="/static/default.png" /> ''')
+
+    picture.short_description = '图片'
+
+
+
     def set_sold(self, request, queryset):
         yifucount = 0
         for one in queryset.all():
@@ -316,7 +323,8 @@ class HuiyuanAdmin(admin.ModelAdmin):
 
 class XiaofeijiluAdmin(admin.ModelAdmin):
     list_display = ('huiyuan', 'jifen', 'xiaofeijine', 'get_products', 'xiaofeishijian')
-
+    list_filter = ['huiyuan','xiaofeishijian']
+    search_fields = ['xiaofeishijian']
     def get_products(self, obj):
         return format_html(u"、".join(["<span class='label label-warning' ><a  style='color:#fff' href='/dzz/yifu/%s'>%s</a></span>" % (p.pk, p.name) for p in obj.yifu.all()]))
 
