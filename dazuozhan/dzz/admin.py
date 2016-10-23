@@ -1,4 +1,4 @@
-# -*-coding:utf-8 -*-
+﻿# -*-coding:utf-8 -*-
 from django.contrib import admin
 from django.conf.urls import url
 
@@ -30,7 +30,7 @@ class YiFuAdmin(admin.ModelAdmin):
     # def view_on_site(self, obj):
     #     url = reverse('admin', kwargs={'name': obj.name})
     #     return 'https://example.com' + url
-    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'picture','qudao', 'jiage','sold')
+    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'picture','qudao', 'jiage','chengben','sold')
     search_fields = ('name', 'tiaomahao')
     list_filter = ('qudao','sold','jiage')
     save_as = True

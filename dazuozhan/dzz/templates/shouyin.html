@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %} {% block extrahead %}
+﻿{% extends "admin/base_site.html" %} {% block extrahead %}
 
 <style type="text/css">
 
@@ -142,7 +142,7 @@ tr {
                                 <div class="input-group">
                                     <div class="input-group-addon">手机号</div>
                                     <input class="form-control" disabled="disabled" type="text" id="cellphone" placeholder="0" style="cursor: pointer;color: #d9534f;
-    font-size: 35px;" title="自动获得">
+    font-size: 24px;" title="自动获得">
                                 </div>
                             </div>
                         </div>
@@ -151,7 +151,7 @@ tr {
                                 <div class="input-group">
                                     <div class="input-group-addon">积分</div>
                                     <input class="form-control" disabled="disabled" type="text" id="jifen" placeholder="0" style="cursor: pointer;color: #d9534f;
-    font-size: 35px;" title="自动获得">
+    font-size: 24px;" title="自动获得">
                                 </div>
                             </div>
                         </div>
@@ -172,7 +172,7 @@ tr {
                             <div class="input-group">
                                 <div class="input-group-addon">应付金额</div>
                                 <input class="form-control" type="text" disabled="disabled" id="yingfukuan" yfk="0" placeholder="0" style="cursor: pointer;color: #d9534f;
-    font-size: 35px;" title="自动获得">
+    font-size: 24px;" title="自动获得">
                             </div>
                         </div>
                         <div class="form-group">
@@ -180,7 +180,20 @@ tr {
                                 <div class="input-group">
                                     <div class="input-group-addon">获得积分</div>
                                     <input class="form-control" type="text" id="huodejifen" placeholder="0" style="cursor: pointer;color: #d9534f;
-    font-size: 35px;">
+    font-size: 24px;">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div>
+                                <div class="input-group">
+                                    <div class="input-group-addon">抵扣积分</div>
+                                    <input class="form-control" type="text" id="dikoujifen" placeholder="0" style="cursor: pointer;color: #d9534f;
+    font-size: 24px;">
+                                    <div class="input-group-addon" id="use_all" style="cursor: pointer;">使用全部积分</div>
                                 </div>
                             </div>
                         </div>
@@ -189,21 +202,12 @@ tr {
                                 <div class="input-group">
                                     <div class="input-group-addon">实付金额</div>
                                     <input class="form-control" type="text" id="shifujine" placeholder="0" style="color: #d9534f;
-    font-size: 35px;">
+    font-size: 24px;">
                                     <div class="input-group-addon" id="use_all_jine" style="cursor: pointer;">全款</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div>
-                                <div class="input-group">
-                                    <div class="input-group-addon">抵扣积分</div>
-                                    <input class="form-control" type="text" id="dikoujifen" placeholder="0" style="cursor: pointer;color: #d9534f;
-    font-size: 35px;">
-                                    <div class="input-group-addon" id="use_all" style="cursor: pointer;">使用全部积分</div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -304,6 +308,7 @@ $(function() {
             if (shijixuyaofukuan < 0)
                 shijixuyaofukuan = 0
             $("#yingfukuan").val($("#yingfukuan").attr("yfk") + " - " + jifen + " = " + shijixuyaofukuan)
+	    $("#yingfukuan").attr("yfk",shijixuyaofukuan)
         }
 
     })
