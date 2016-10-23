@@ -19,11 +19,7 @@ from dss.Serializer import serializer
 class YiFuAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('name', 'tiaomahao', 'guige', 'yanse', 'qudao')
-        }),
-        ('其他', {
-            'classes': ('collapse',),
-            'fields': ('jiage', 'chengben','sold'),
+            'fields': ('name', 'tiaomahao', 'guige', 'yanse', 'qudao','chengben','jiage')
         }),
     )
     #

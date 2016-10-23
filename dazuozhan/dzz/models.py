@@ -52,7 +52,7 @@ class Yifu(models.Model):
     chengben = models.CharField(max_length=8, verbose_name="成本", default='', null=True, blank=True)
     jifen = models.CharField(max_length=8, verbose_name="积分", default='', null=True, blank=True)
     dsq = models.CharField(max_length=8, verbose_name="记一分", default='', null=True, blank=True)
-    sold = models.BooleanField(default=0,verbose_name="是否卖掉")
+    sold = models.BooleanField(default=False,verbose_name="是否卖掉")
 
     # jifen = models.CharField(max_length=8,verbose_name="积分",default='',null=True)
   
@@ -75,7 +75,8 @@ class Yifu(models.Model):
                 newprice = cb * 1.85 * 1.25
             else:
                 newprice = cb * 1.8 * 1.25
-            self.jiage = str(int(newprice))
+            if not self.jiage:
+                self.jiage = str(int(newprice))
 
         super(Yifu, self).save(*args, **kwargs)
 
