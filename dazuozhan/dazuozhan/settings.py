@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
-import os
+import os,platform
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -119,11 +119,16 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = 'C:/Users/zhulielie/OneDrive/deve/dazuozhan/dzz/static/'
+if platform.system() == 'Darwin':
+    STATIC_ROOT = '/Users/zhulielie/sklp_web/dazuozhan/dzz/static/'
+    MEDIA_ROOT = '/Users/zhulielie/sklp_web/dazuozhan/dzz/static/img/yifu/'
+else:
+    STATIC_ROOT = 'C:/Users/Administrator/Documents/sklp_web/dazuozhan/dzz/static/'
+    MEDIA_ROOT = 'C:/Users/Administrator/Documents/sklp_web/dazuozhan/dzz/static/img/yifu/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 # MEDIA_URL = '/static/'
-MEDIA_ROOT = 'C:/Users/zhulielie/OneDrive/deve/dazuozhan/upload/'
+
 STATIC_URL = '/static/'
 # DATE_FORMAT = 'Y-m-d'
 # DATETIME_FORMAT = 'Y-m-d H:i:s'

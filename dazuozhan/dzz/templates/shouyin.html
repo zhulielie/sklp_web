@@ -539,6 +539,10 @@ $(function() {
         var kehucellphone = $("#huiyuan_search").val()
         var jine = $("#shifujine").val()
         var shiyongjifen = parseInt($("#dikoujifen").val())
+        if (shiyongjifen > 0)
+            ;
+        else
+            shiyongjifen = 0
         var huodejifen = parseInt($("#huodejifen").val())
         if (arr.length && kehucellphone && jine && huodejifen)
             swal({

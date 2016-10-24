@@ -6,7 +6,7 @@ from django.utils.html import format_html
 # Register your models here.
 from .models import Jinhuoqudao, Yifu, ChukuLog, RukuLog, Jiagewenjian, Huiyuan, Xiaofeijilu
 from django.template.response import TemplateResponse, HttpResponse
-import json
+import json,os,platform
 
 from django.urls import reverse
 import codecs
@@ -16,24 +16,51 @@ admin.site.register(Jinhuoqudao)
 from dss.Serializer import serializer
 
 
+
+
+
+
 class YiFuAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': ('name', 'tiaomahao', 'guige', 'yanse', 'qudao','chengben','jiage')
+            'fields': ('name', 'tiaomahao', 'guige', 'yanse', 'qudao','chengben','jiage','uploadfile')
         }),
     )
     #
     # def view_on_site(self, obj):
     #     url = reverse('admin', kwargs={'name': obj.name})
     #     return 'https://example.com' + url
-    list_display = ('name', 'tiaomahao', 'guige', 'yanse', 'picture','qudao', 'jiage','chengben','sold')
+    list_display = ['name', 'tiaomahao', 'guige', 'yanse', 'picture','qudao', 'jiage','sold']
     search_fields = ('name', 'tiaomahao')
     list_filter = ('qudao','sold','jiage')
     save_as = True
     
-    def picture(self, obj):
-        return format_html('''<img class="tooltip_templates" onclick="window.open('/static/default.png')" title="在新的一页打开" alt="服装图片" src="/static/default.png" /> ''')
 
+    def changelist_view(self, request, extra_context=None): 
+        user = request.user 
+        if user.is_superuser: 
+            self.list_display.append('chengben')
+            print 'super'
+        else:
+            print 'not super'
+
+        return super(YiFuAdmin, self).changelist_view(request, extra_context=None)
+
+
+    def picture(self, obj):
+        if platform.system() == 'Darwin':
+
+            filename = '/Users/zhulielie/sklp_web/dazuozhan/dzz/static/img/yifu/%s' % obj.uploadfile
+        else:
+            firename = 'C:/Users/Administrator/Documents/sklp_web/dazuozhan/dzz/static/img/yifu/%s' % obj.uploadfile
+
+
+        imgfilepath = '/static/img/yifu/%s' % obj.uploadfile
+
+        if os.path.exists(filename):
+            return format_html('''<img class="tooltip_templates" onclick="window.open('%s')" title="在新的一页打开" alt="服装图片" src="%s" /> ''' % (imgfilepath,imgfilepath))
+        else:
+            return '-'
     picture.short_description = '图片'
 
 
@@ -261,8 +288,15 @@ class RukuAdmin(admin.ModelAdmin):
 
 
 class HuiyuanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'jifen', 'birthday', 'cellphone', 'zongxiaofeicishu','last_xiaofei','last_xiaofeijine','zongxiaofeijine')
+    list_display = ('name', 'jifen', 'birthday', 'cellphone', 'zongxiaofeicishu','last_xiaofei','last_xiaofeijine','zongxiaofeijine','xiaofeijilu')
     exclude = ('last_xiaofei', 'zongxiaofeijine', 'zongxiaofeicishu', 'last_xiaofeijine', 'jifen', 'shengrizengpin')
+
+
+
+    def xiaofeijilu(self,obj):
+
+        return format_html("<a href='/dzz/xiaofeijilu/?huiyuan__id__exact=%s'>查看消费记录</a>" % obj.pk)
+    xiaofeijilu.short_description = ""
 
     def json_huiyuan(self, request, iid):
 
@@ -325,7 +359,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         return format_html(u"、".join(["<span class='label label-warning' ><a  style='color:#fff' href='/dzz/yifu/%s'>%s</a></span>" % (p.pk, p.name) for p in obj.yifu.all()]))
 
     get_products.short_description = '购买的物品'
-
+    list_display_links = None
     def get_urls(self):
         urls = super(XiaofeijiluAdmin, self).get_urls()
         my_urls = [
@@ -347,7 +381,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
         if kehu and yifu and jine:
             huiyuan = Huiyuan.objects.get(cellphone=kehu)
             jilu = Xiaofeijilu(huiyuan=huiyuan,xiaofeijine=int(jine))
-            
+            jilu.jifen = dedaojifen
             jilu.save()
             yifus = yifu.split('__')
             try:
@@ -362,6 +396,8 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
                     syifu.sold= True
                     syifu.save()
                 huiyuan.jifen = huiyuan.jifen + int(dedaojifen)
+
+                print huiyuan.jifen
                 huiyuan.save()
                 fb['data'] = True
             except Exception as e:

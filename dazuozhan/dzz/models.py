@@ -140,7 +140,7 @@ class Huiyuan(models.Model):
 
 class Xiaofeijilu(models.Model):
     huiyuan = models.ForeignKey(Huiyuan, verbose_name="会员")
-    jifen = models.IntegerField(verbose_name="积分", default=0, blank=True, null=True)
+    jifen = models.IntegerField(verbose_name="获得积分", default=0, blank=True, null=True)
     xiaofeishijian = models.DateTimeField(verbose_name="消费时间", auto_now_add=True)
     xiaofeijine = models.IntegerField(verbose_name="消费金额", null=True, blank=True, default=0)
     yifu = models.ManyToManyField(Yifu, verbose_name="所购物品", blank=True, related_name="yifu")
