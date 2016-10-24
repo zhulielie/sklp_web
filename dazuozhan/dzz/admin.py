@@ -52,7 +52,7 @@ class YiFuAdmin(admin.ModelAdmin):
 
             filename = '/Users/zhulielie/sklp_web/dazuozhan/dzz/static/img/yifu/%s' % obj.uploadfile
         else:
-            firename = 'C:/Users/Administrator/Documents/sklp_web/dazuozhan/dzz/static/img/yifu/%s' % obj.uploadfile
+            filename = 'C:/Users/Administrator/Documents/sklp_web/dazuozhan/dzz/static/img/yifu/%s' % obj.uploadfile
 
 
         imgfilepath = '/static/img/yifu/%s' % obj.uploadfile
@@ -288,10 +288,28 @@ class RukuAdmin(admin.ModelAdmin):
 
 
 class HuiyuanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'jifen', 'birthday', 'cellphone', 'zongxiaofeicishu','last_xiaofei','last_xiaofeijine','zongxiaofeijine','xiaofeijilu')
-    exclude = ('last_xiaofei', 'zongxiaofeijine', 'zongxiaofeicishu', 'last_xiaofeijine', 'jifen', 'shengrizengpin')
+    list_display = ('name', 'jifen', 'birthday', 'cellphone', 'zongxiaofeicishu','zongxiaofeijine','last_xiaofeijine','last_xiaofei','xiaofeijilu')
+    exclude = ('last_xiaofei', 'zongxiaofeijine', 'zongxiaofeicishu', 'last_xiaofeijine',  'shengrizengpin')
 
 
+
+    def zongxiaofeicishu(self,obj):
+        return len(Xiaofeijilu.objects.filter(huiyuan=obj))
+
+    zongxiaofeicishu.short_description = "总消费次数"
+    def last_xiaofei(self,obj):
+        xfjls = Xiaofeijilu.objects.filter(huiyuan=obj).order_by('-xiaofeishijian')
+        return xfjls[0].xiaofeishijian if xfjls else ''
+    last_xiaofei.short_description = "上一次消费时间"
+    def last_xiaofeijine(self,obj):
+        xfjls = Xiaofeijilu.objects.filter(huiyuan=obj).order_by('-xiaofeishijian')
+        return xfjls[0].xiaofeijine if xfjls else ''
+
+    last_xiaofeijine.short_description = "上一次消费金额"
+    def zongxiaofeijine(self,obj):
+        
+        return sum( map(lambda x:x.xiaofeijine , Xiaofeijilu.objects.filter(huiyuan=obj)))
+    zongxiaofeijine.short_description = "总消费金额"
 
     def xiaofeijilu(self,obj):
 

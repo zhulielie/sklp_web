@@ -123,10 +123,6 @@ class Huiyuan(models.Model):
     touxiang = models.CharField(verbose_name="头像", max_length=32, blank=True, null=True, default='')
     lianxidizhi = models.CharField(verbose_name="联系地址", blank=True, null=True, max_length=128)
     jifen = models.IntegerField(verbose_name="积分", default=0, blank=True, null=True)
-    last_xiaofei = models.DateTimeField(verbose_name="最近一次消费时间", null=True, blank=True,default=yestoday)
-    last_xiaofeijine = models.IntegerField(verbose_name="最近一次消费金额", null=True, blank=True, default=0)
-    zongxiaofeijine = models.IntegerField(verbose_name="总消费金额", null=True, blank=True, default=0)
-    zongxiaofeicishu = models.IntegerField(verbose_name="总消费次数", null=True, blank=True, default=0)
     beizhu = models.TextField(verbose_name="备注", null=True, blank=True)
     shengrizengpin = models.BooleanField(verbose_name="生日奖励已领取", choices=lingqu, default=0)
 
