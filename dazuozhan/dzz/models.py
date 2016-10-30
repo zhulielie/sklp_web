@@ -50,7 +50,7 @@ class Yifu(models.Model):
     qudao = models.ForeignKey(Jinhuoqudao, verbose_name="渠道")
     jiage = models.CharField(max_length=8, verbose_name="价格", default='', null=True, blank=True)
     chengben = models.CharField(max_length=8, verbose_name="成本", default='', null=True, blank=True)
-    jifen = models.CharField(max_length=8, verbose_name="积分", default='', null=True, blank=True)
+    jifen = models.CharField(max_length=8, verbose_name="积分", default='0', null=True, blank=True)
     dsq = models.CharField(max_length=8, verbose_name="记一分", default='', null=True, blank=True)
     sold = models.BooleanField(default=False,verbose_name="是否卖掉")
 

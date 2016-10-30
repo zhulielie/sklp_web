@@ -127,6 +127,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"file",
+			"fil1",
+			"fi了",
+			"fi",
+			"file",
+			"fi了；e",
+			"fire",
 			"xiao'fei'ji'lu",
 			"de'dao'ji'fen",
 			"ji'lu'zai'an",

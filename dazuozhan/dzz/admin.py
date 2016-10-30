@@ -413,7 +413,7 @@ class XiaofeijiluAdmin(admin.ModelAdmin):
                     jilu.yifu.add(syifu) 
                     syifu.sold= True
                     syifu.save()
-                huiyuan.jifen = huiyuan.jifen + int(dedaojifen)
+                huiyuan.jifen = int(huiyuan.jifen) + int(dedaojifen)
 
                 print huiyuan.jifen
                 huiyuan.save()
