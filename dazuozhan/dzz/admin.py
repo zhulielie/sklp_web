@@ -39,7 +39,10 @@ class YiFuAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None): 
         user = request.user 
         if user.is_superuser: 
-            self.list_display.append('chengben')
+            if 'chengben' in self.list_display:
+                pass
+            else:
+                self.list_display.append('chengben')
             print 'super'
         else:
             print 'not super'
